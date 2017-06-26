@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>688205cb-09f5-44ca-b36a-bb38692d4695</ProjectGuid>
+    <ProjectGuid>{688205CB-09F5-44CA-B36A-BB38692D4695}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EIM</RootNamespace>
@@ -30,24 +30,100 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="EIMLog.cs" />
+    <Compile Include="ConfigurationManagerHelper.cs" />
+    <Compile Include="ConsoleHelper.cs" />
+    <Compile Include="Consts\GongdanConst.cs" />
+    <Compile Include="Consts\MenuCodeConst.cs" />
+    <Compile Include="Consts\XiaoxiLeibieConst.cs" />
+    <Compile Include="DateRange.cs" />
+    <Compile Include="DateTimeHelper.cs" />
+    <Compile Include="DateTimeRange.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Enums\AcceptStatus.cs" />
+    <Compile Include="Enums\DelType.cs" />
+    <Compile Include="Enums\FuwudanQuanxian.cs" />
+    <Compile Include="Enums\FuwudanZhuangtai.cs" />
+    <Compile Include="Enums\GongdanZhuangtai.cs" />
+    <Compile Include="Enums\HuifangZhuangtai.cs" />
+    <Compile Include="Enums\HuifuZhuangtai.cs" />
+    <Compile Include="Enums\JiesuandanStatus.cs" />
+    <Compile Include="Enums\JiesuanType.cs" />
+    <Compile Include="Enums\OrgType.cs" />
+    <Compile Include="Enums\PeijianHexiaodanMingxiZhuangtai.cs" />
+    <Compile Include="Enums\PeijianHexiaodanZhuangtai.cs" />
+    <Compile Include="Enums\PeijianLeixing.cs" />
+    <Compile Include="Enums\XiaoxiDengji.cs" />
+    <Compile Include="Enums\XiaoxiZhuangtai.cs" />
+    <Compile Include="Exceptions\BPMSException.cs" />
+    <Compile Include="Exceptions\DataProviderLoadedCountNotEqualException.cs" />
+    <Compile Include="Exceptions\Gongdan\GongdanNullException.cs" />
+    <Compile Include="Exceptions\Gongdan\QuxiaoDuogeGongdanException.cs" />
+    <Compile Include="Exceptions\Gongdan\QuxiaoYiChuliGongdanException.cs" />
+    <Compile Include="Exceptions\LoadByWhereContainsSqlKeywordflowException.cs" />
+    <Compile Include="Exceptions\LoadByWhereCountOverflowException.cs" />
+    <Compile Include="Exceptions\ObjectFilterSoftException.cs" />
+    <Compile Include="Exceptions\ObjectManagerUnableException.cs" />
+    <Compile Include="Exceptions\ValidateException.cs" />
+    <Compile Include="IKeyProvider.cs" />
+    <Compile Include="IOrderable.cs" />
+    <Compile Include="IPropertyComparable.cs" />
+    <Compile Include="JsonConvertHelper.cs" />
+    <Compile Include="JsonWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="KeywordMatcher.cs" />
+    <Compile Include="LogStopwatch.cs" />
+    <Compile Include="ObjectComparer.cs" />
+    <Compile Include="ObjectMapper.cs" />
+    <Compile Include="OrderHelper.cs" />
+    <Compile Include="Pinyin\DimingPinyinProvider.cs" />
+    <Compile Include="Pinyin\HanziPinyinHelper.cs" />
+    <Compile Include="Pinyin\PinyinProvider.cs" />
+    <Compile Include="Pinyin\ZikuLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReaderWriterLockedList.cs" />
+    <Compile Include="ReaderWriterLockedQueue.cs" />
+    <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="RegexHelper.cs" />
+    <Compile Include="RegexList.cs" />
+    <Compile Include="TableNames.cs" />
+    <Compile Include="TEventHandler.cs" />
+    <Compile Include="TextHelper.cs" />
+    <Compile Include="ValueAttributes\AreaServerCodeValueAttribute.cs" />
+    <Compile Include="ValueAttributes\DepartmentGuidValueAttribute.cs" />
+    <Compile Include="ValueAttributes\FuwudanTypeValueAttribute.cs" />
+    <Compile Include="ValueAttributes\GuidStringValueAttribute.cs" />
+    <Compile Include="ValueAttributes\LimitedLengthValueAttribute.cs" />
+    <Compile Include="ValueAttributes\LocationValueAttribute.cs" />
+    <Compile Include="ValueAttributes\NotUpdateValueAttribute.cs" />
+    <Compile Include="ValueAttributes\ProductGuidValueAttribute.cs" />
+    <Compile Include="ValueAttributes\ProductU9CodeValueAttribute.cs" />
+    <Compile Include="ValueAttributes\ReadonlyValueAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Pinyin\地名字库.txt" />
+    <Content Include="Pinyin\字库.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+</Project>

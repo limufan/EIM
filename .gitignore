@@ -34,5 +34,6 @@ Thumbs.db
 */*.[Mm][Ss][Ii]
 build/
 logs/
+packages/
 phantomjs.exe
 pageTest.png
