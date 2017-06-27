@@ -6,12 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using EIM.Business;
 using EIM.Core;
+using EIM.Data.Org;
 
 namespace EIM.Data
 {
     public class EIMDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public EIMDbContext()
+            :base("EIM")
+        {
+            this.DbSetList = new List<object>();
+            this.DbSetList.Add(this.Users);
+        }
+
+        public DbSet<UserModel> Users { get; set; }
 
         public List<object> DbSetList { set; get; }
 

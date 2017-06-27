@@ -55,6 +55,8 @@
     <Compile Include="DataProvider.cs" />
     <Compile Include="DataProviderFactory.cs" />
     <Compile Include="EIMDbContext.cs" />
+    <Compile Include="MigrationsConfiguration.cs" />
+    <Compile Include="Org\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
