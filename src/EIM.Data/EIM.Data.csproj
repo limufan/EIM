@@ -50,15 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CacheDataProvider.cs" />
-    <Compile Include="DataModelCacheMapper.cs" />
+    <Compile Include="MappedDataProvider.cs" />
+    <Compile Include="DataModelMapper.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="DataProviderFactory.cs" />
     <Compile Include="EIMDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

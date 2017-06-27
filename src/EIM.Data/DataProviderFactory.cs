@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using EIM.Business;
 using EIM.Core;
 
 namespace EIM.Data
 {
     public class DataProviderFactory
     {
-        public DataProviderFactory(CacheManagerContainer cacheManagerContainer)
+        public DataProviderFactory(BusinessManager businessManager)
         {
-            this.CacheManagerContainer = cacheManagerContainer;
+            this.BusinessManager = businessManager;
+            this.DataModelMapperFactory = new DataModelMapperFactory(businessManager);
             this.DataProviders = new List<IDataProvider>();
             this.DataProviderTypes = ReflectionHelper.GetSubclass<IDataProvider>(this.GetType().Assembly);
         }
 
-        public CacheManagerContainer CacheManagerContainer { private set; get; }
+        public BusinessManager BusinessManager { private set; get; }
+
+        public DataModelMapperFactory DataModelMapperFactory { private set; get; }
 
         public List<IDataProvider> DataProviders { private set; get; }
 
@@ -42,9 +46,9 @@ namespace EIM.Data
             return dataProvder;
         }
 
-        public virtual CacheDataProvider<CacheType, ModelType> CreateDataProvider<CacheType, ModelType>() where ModelType : class
+        public virtual MappedDataProvider<MappedType, ModelType> CreateDataProvider<MappedType, ModelType>() where ModelType : class
         {
-            CacheDataProvider<CacheType, ModelType> dataProvider = this.CreateSubclassDataProvider<CacheDataProvider<CacheType, ModelType>>();
+            MappedDataProvider<MappedType, ModelType> dataProvider = this.CreateSubclassDataProvider<MappedDataProvider<MappedType, ModelType>>();
 
             return dataProvider;
         }
@@ -83,7 +87,15 @@ namespace EIM.Data
 
         protected virtual object CreateDataProvider(Type type, EIMDbContext context) 
         {
-            IDataProvider dataProvider =  Activator.CreateInstance(type, this.CacheManagerContainer, context) as IDataProvider;
+            IDataProvider dataProvider;
+            if (type == typeof(IMappedDataProvider))
+            {
+                dataProvider = Activator.CreateInstance(type, this.DataModelMapperFactory, context) as IDataProvider; 
+            }
+            else
+            {
+                dataProvider = Activator.CreateInstance(type, context) as IDataProvider;
+            }
 
             return dataProvider;
         }

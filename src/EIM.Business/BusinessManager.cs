@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Core
+namespace EIM.Business
 {
-    public class CacheManagerContainer
+    public class BusinessManager
     {
-        public CacheMapper ObjectMapper { set; get; }
+        public BusinessMapper ObjectMapper { set; get; }
     }
 }

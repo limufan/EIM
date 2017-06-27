@@ -4,23 +4,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using EIM.Business;
 
 namespace EIM.Data
 {
-    public class DataModelCacheMapperFactory
+    public class DataModelMapperFactory
     {
-        public static DataModelCacheMapper<CacheType, ModelType> CreateMapper<CacheType, ModelType>(CacheManagerContainer cacheManagerContainer)
+        public DataModelMapperFactory(BusinessManager businessManager)
         {
-            DataModelCacheMapper<CacheType, ModelType> mapper = null;
+            this.BusinessManager = businessManager;
+        }
 
-            Type mapperType = ReflectionHelper.GetSingleSubclass<DataModelCacheMapper<CacheType, ModelType>>(typeof(DataModelCacheMapperFactory).Assembly);
+        public BusinessManager BusinessManager { set; get; }
+
+        public DataModelMapper<MappedType, ModelType> CreateMapper<MappedType, ModelType>()
+        {
+            DataModelMapper<MappedType, ModelType> mapper = null;
+
+            Type mapperType = ReflectionHelper.GetSingleSubclass<DataModelMapper<MappedType, ModelType>>(typeof(DataModelMapperFactory).Assembly);
             if (mapperType == null)
             {
-                mapper = new DataModelCacheMapper<CacheType, ModelType>(cacheManagerContainer);
+                mapper = new DataModelMapper<MappedType, ModelType>(this.BusinessManager);
             }
             else
             {
-                mapper = Activator.CreateInstance(mapperType, cacheManagerContainer) as DataModelCacheMapper<CacheType, ModelType>;
+                mapper = Activator.CreateInstance(mapperType, this.BusinessManager) as DataModelMapper<MappedType, ModelType>;
             }
 
             if (mapper == null)
@@ -33,27 +41,27 @@ namespace EIM.Data
 
     }
 
-    public interface IDataModelCacheMapper
+    public interface IDataModelMapper
     {
 
     }
 
-    public class DataModelCacheMapper<CacheType, ModelType> : IDataModelCacheMapper
+    public class DataModelMapper<MappedType, ModelType> : IDataModelMapper
     {
-        public DataModelCacheMapper(CacheManagerContainer cacheManagerContainer)
+        public DataModelMapper(BusinessManager businessManager)
         {
-            this.CacheManagerContainer = cacheManagerContainer;
+            this.BusinessManager = businessManager;
         }
 
-        public CacheManagerContainer CacheManagerContainer { set; get; }
+        public BusinessManager BusinessManager { set; get; }
 
-        public virtual CacheType Map(ModelType model)
+        public virtual MappedType Map(ModelType model)
         {
             if (model == null)
             {
-                return default(CacheType);
+                return default(MappedType);
             }
-            ConstructorInfo cotr = ReflectionHelper.GetConstructor(typeof(CacheType));
+            ConstructorInfo cotr = ReflectionHelper.GetConstructor(typeof(MappedType));
             ParameterInfo[] cotrParams = cotr.GetParameters();
             if (cotrParams.Length > 1)
             {
@@ -63,12 +71,12 @@ namespace EIM.Data
             {
                 object infoArgs = Activator.CreateInstance(cotrParams[0].ParameterType);
                 this.Map(infoArgs, model);
-                CacheType obj = this.CacheManagerContainer.ObjectMapper.Map<CacheType>(infoArgs);
+                MappedType obj = this.BusinessManager.ObjectMapper.Map<MappedType>(infoArgs);
                 return obj;
             }
             else
             {
-                CacheType obj = this.CacheManagerContainer.ObjectMapper.Map<CacheType>(model);
+                MappedType obj = this.BusinessManager.ObjectMapper.Map<MappedType>(model);
                 return obj;
             }
         }
@@ -99,7 +107,7 @@ namespace EIM.Data
         /// <param name="model"></param>
         public virtual void Map(object info, ModelType model)
         {
-            this.CacheManagerContainer.ObjectMapper.Map(info, model);
+            this.BusinessManager.ObjectMapper.Map(info, model);
         }
 
         /// <summary>
@@ -126,7 +134,7 @@ namespace EIM.Data
         /// <param name="info"></param>
         public virtual void Map(ModelType model, object info)
         {
-            this.CacheManagerContainer.ObjectMapper.Map(model, info);
+            this.BusinessManager.ObjectMapper.Map(model, info);
         }
     }
 
