@@ -39,6 +39,9 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -50,10 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MappedDataProvider.cs" />
+    <Compile Include="EFDataModelProvider.cs" />
+    <Compile Include="EFDataModelProviderFactory.cs" />
+    <Compile Include="BusinessModelProviderFactory.cs" />
+    <Compile Include="BusinessModelProvider.cs" />
     <Compile Include="DataModelMapper.cs" />
-    <Compile Include="DataProvider.cs" />
-    <Compile Include="DataProviderFactory.cs" />
+    <Compile Include="DataModelProvider.cs" />
+    <Compile Include="DataModelProviderFactory.cs" />
     <Compile Include="EIMDbContext.cs" />
     <Compile Include="MigrationsConfiguration.cs" />
     <Compile Include="Org\UserModel.cs" />
@@ -66,10 +72,6 @@
     <ProjectReference Include="..\EIM.Business\EIM.Business.csproj">
       <Project>{9be61205-7157-4e41-a36d-2af28654ab32}</Project>
       <Name>EIM.Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EIM.Core\EIM.Core.csproj">
-      <Project>{ceac9f8e-f914-4aa8-9343-d446d971f56a}</Project>
-      <Name>EIM.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\EIM\EIM.csproj">
       <Project>{688205cb-09f5-44ca-b36a-bb38692d4695}</Project>

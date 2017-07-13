@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,14 +48,23 @@
   <ItemGroup>
     <Compile Include="BusinessManager.cs" />
     <Compile Include="BusinessMapper.cs" />
+    <Compile Include="CacheCounter.cs" />
+    <Compile Include="CacheManager.cs" />
+    <Compile Include="DelayCacheManager.cs" />
+    <Compile Include="ICache.cs" />
+    <Compile Include="ICacheManager.cs" />
+    <Compile Include="ObjectFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Org\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EIM\EIM.csproj">
       <Project>{688205cb-09f5-44ca-b36a-bb38692d4695}</Project>
       <Name>EIM</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

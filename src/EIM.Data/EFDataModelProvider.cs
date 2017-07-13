@@ -87,6 +87,11 @@ namespace EIM.Data
             this.DbContext.SaveChanges();
         }
 
+        public override void Refresh(ModelType model)
+        {
+            this.DbContext.Entry<ModelType>(model).Reload();
+        }
+
         public override List<ModelType> GetTopModels(int count)
         {
             List<ModelType> models =

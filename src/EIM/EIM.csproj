@@ -73,7 +73,7 @@
     <Compile Include="Enums\PeijianLeixing.cs" />
     <Compile Include="Enums\XiaoxiDengji.cs" />
     <Compile Include="Enums\XiaoxiZhuangtai.cs" />
-    <Compile Include="Exceptions\BPMSException.cs" />
+    <Compile Include="Exceptions\EIMException.cs" />
     <Compile Include="Exceptions\DataProviderLoadedCountNotEqualException.cs" />
     <Compile Include="Exceptions\Gongdan\GongdanNullException.cs" />
     <Compile Include="Exceptions\Gongdan\QuxiaoDuogeGongdanException.cs" />

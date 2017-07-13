@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Business
+namespace EIM.Business.Org
 {
     public class User
     {

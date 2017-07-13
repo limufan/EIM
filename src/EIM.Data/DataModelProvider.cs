@@ -27,6 +27,8 @@ namespace EIM.Data
 
         public abstract void Delete(Expression<Func<ModelType, bool>> expression);
 
+        public abstract void Refresh(ModelType model);
+
         public abstract List<ModelType> GetTopModels(int count);
 
         public abstract List<ModelType> GetModels();
