@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace EIM.Data
 {
-    public interface IDataProvider
-    {
-
-    }
-
-    public class DataProvider<ModelType> : IDisposable, IDataProvider
+    public class EFDataModelProvider<ModelType> : DataModelProvider<ModelType>
         where ModelType : class
     {
-        public DataProvider(EIMDbContext dbContext)
+        public EFDataModelProvider(EIMDbContext dbContext)
         {
             if (dbContext == null)
             {
@@ -36,7 +29,7 @@ namespace EIM.Data
 
         internal DbSet<ModelType> DbSet { set; get; }
 
-        public virtual void Insert(ModelType model)
+        public override void Insert(ModelType model)
         {
             try
             {
@@ -44,7 +37,7 @@ namespace EIM.Data
                 {
                     throw new ArgumentNullException("model");
                 }
-                
+
                 this.DbSet.Add(model);
                 this.DbContext.SaveChanges();
             }
@@ -55,7 +48,7 @@ namespace EIM.Data
             }
         }
 
-        public virtual void Update(ModelType model)
+        public override void Update(ModelType model)
         {
             try
             {
@@ -63,7 +56,7 @@ namespace EIM.Data
                 {
                     throw new ArgumentNullException("model");
                 }
-                
+
                 this.DbContext.SaveChanges();
             }
             catch
@@ -73,7 +66,7 @@ namespace EIM.Data
             }
         }
 
-        public virtual void Delete(ModelType model)
+        public override void Delete(ModelType model)
         {
             if (model == null)
             {
@@ -84,17 +77,17 @@ namespace EIM.Data
             this.DbContext.SaveChanges();
         }
 
-        public virtual void Delete(Expression<Func<ModelType, bool>> expression)
+        public override void Delete(Expression<Func<ModelType, bool>> expression)
         {
             List<ModelType> models = this.DbSet.Where(expression).ToList();
-            foreach(ModelType model in models)
+            foreach (ModelType model in models)
             {
                 this.DbSet.Remove(model);
             }
             this.DbContext.SaveChanges();
         }
 
-        public virtual List<ModelType> GetTopModels(int count)
+        public override List<ModelType> GetTopModels(int count)
         {
             List<ModelType> models =
                 this.DbSet.Take(count)
@@ -103,44 +96,39 @@ namespace EIM.Data
             return models;
         }
 
-        public virtual List<ModelType> GetModels()
+        public override List<ModelType> GetModels()
         {
             return this.DbSet
                     .ToList();
         }
 
-        public virtual List<ModelType> SelectModels(Expression<Func<ModelType, bool>> expression)
+        public override List<ModelType> SelectModels(Expression<Func<ModelType, bool>> expression)
         {
             return this.DbSet.Where(expression)
                     .ToList();
         }
 
-        public virtual ModelType SelectFirst(Expression<Func<ModelType, bool>> expression)
+        public override ModelType SelectFirst(Expression<Func<ModelType, bool>> expression)
         {
             return this.DbSet.First(expression);
         }
 
-        public virtual ModelType SelectById(object id)
+        public override ModelType SelectById(object id)
         {
             return this.DbSet.Find(id);
         }
 
-        public virtual int Count()
+        public override int Count()
         {
             return this.DbSet.Count();
         }
 
-        public virtual bool Exist(ModelType model)
+        public override bool Exist(ModelType model)
         {
             return this.DbSet.Contains(model);
         }
 
-        public void Dispose()
-        {
-            this.Close();
-        }
-
-        public void Close()
+        public override void Close()
         {
             this.DbContext.Dispose();
         }

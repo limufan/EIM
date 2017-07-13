@@ -18,7 +18,7 @@ namespace EIM.Tests
             MigrationsConfiguration.SetInitializer();
             using (EIMDbContext dbContext = new EIMDbContext())
             {
-                DataProvider<UserModel> dataProvider = new DataProvider<UserModel>(dbContext);
+                EFDataModelProvider<UserModel> dataProvider = new EFDataModelProvider<UserModel>(dbContext);
                 dataProvider.Insert(new UserModel { Guid = Guid.NewGuid().ToString() });
             }
                 
