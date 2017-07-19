@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EIM.Core;
+using EIM.Data;
 
-namespace EIM.Data
+namespace EIM.Core
 {
     public interface IBusinessModelProvider
     {

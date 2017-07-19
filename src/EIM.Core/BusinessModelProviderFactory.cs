@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using EIM.Business;
 using EIM.Core;
+using EIM.Data;
 
-namespace EIM.Data
+namespace EIM.Core
 {
     public class BusinessModelProviderFactory
     {
@@ -34,6 +35,10 @@ namespace EIM.Data
             DataModelProvider<ModelType> dataModelProvider = this.DataProviderFactory.CreateDataProviderByModelType<ModelType>();
 
             BusinessModelProvider<MappedType, ModelType> dataProvider = this.CreateDataProvider<MappedType, ModelType>(dataModelProvider);
+            if(dataProvider == null)
+            {
+                dataProvider = new BusinessModelProvider<MappedType, ModelType>(this.DataModelMapperFactory, dataModelProvider);
+            }
 
             return dataProvider;
         }
@@ -50,7 +55,7 @@ namespace EIM.Data
             Type dataProviderType = ReflectionHelper.GetSingleSubclass<T>(this.DataProviderTypes);
             if (dataProviderType == null)
             {
-                throw new ArgumentException("无法获取DataProvider类型");
+                return null;
             }
 
             T dataProvider = Activator.CreateInstance(dataProviderType, this.DataModelMapperFactory, dataModelProvider) as T;

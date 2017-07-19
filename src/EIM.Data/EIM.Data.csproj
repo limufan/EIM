@@ -55,9 +55,6 @@
   <ItemGroup>
     <Compile Include="EFDataModelProvider.cs" />
     <Compile Include="EFDataModelProviderFactory.cs" />
-    <Compile Include="BusinessModelProviderFactory.cs" />
-    <Compile Include="BusinessModelProvider.cs" />
-    <Compile Include="DataModelMapper.cs" />
     <Compile Include="DataModelProvider.cs" />
     <Compile Include="DataModelProviderFactory.cs" />
     <Compile Include="EIMDbContext.cs" />

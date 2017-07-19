@@ -17,21 +17,6 @@ namespace EIM.Core
         /// 加载缓存
         /// </summary>
         void Load(bool newThread);
-
-        /// <summary>
-        /// 检查缓存
-        /// </summary>
-        void CheckCache();
-
-        /// <summary>
-        /// 检查最近修改的缓存
-        /// </summary>
-        void CheckRecentlyModifiedCache();
-
-        /// <summary>
-        /// 是否是基础缓存
-        /// </summary>
-        bool IsBaseCache { get; }
     }
 
     public abstract class CacheProvider<CacheType> : ICacheProvider
@@ -157,11 +142,5 @@ namespace EIM.Core
             int count = this.CacheManager.Count();
             Console.WriteLine(string.Format("{0} 加载了{1}条数据, 用时: {2}", this.GetType().Name, count, this._watch.Elapsed.TotalSeconds));
         }
-
-        public abstract void CheckCache();
-
-        public abstract void CheckRecentlyModifiedCache();
-
-        public virtual bool IsBaseCache { get { return false; } }
     }
 }

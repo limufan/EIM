@@ -36,7 +36,7 @@ namespace EIM.Data
             Type dataProviderType = ReflectionHelper.GetSingleSubclass<T>(this.DataProviderTypes);
             if (dataProviderType == null)
             {
-                throw new ArgumentException("无法获取DataProvider类型");
+                return null;
             }
 
             T dataProvider = this.CreateDataProvider(dataProviderType) as T;
@@ -48,5 +48,7 @@ namespace EIM.Data
 
             return dataProvider;
         }
+
+
     }
 }

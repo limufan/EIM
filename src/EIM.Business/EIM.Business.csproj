@@ -46,10 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessManager.cs" />
-    <Compile Include="BusinessMapper.cs" />
     <Compile Include="CacheCounter.cs" />
     <Compile Include="CacheManager.cs" />
+    <Compile Include="Cache\ByCodeCacheManager.cs" />
+    <Compile Include="Cache\ByGuidCacheManager.cs" />
+    <Compile Include="Cache\ByGuidCodeCacheManager.cs" />
+    <Compile Include="Cache\ByIdCacheManager.cs" />
+    <Compile Include="Cache\ByIdCodeCacheManager.cs" />
+    <Compile Include="Cache\ByIdCodeLongCodeCacheManager.cs" />
+    <Compile Include="Cache\ByIdCodeLongCodeNameCacheManager.cs" />
+    <Compile Include="Cache\ByIdCodeNameCacheManager.cs" />
+    <Compile Include="Cache\ByIdGuidCacheManager.cs" />
     <Compile Include="DelayCacheManager.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="ICacheManager.cs" />

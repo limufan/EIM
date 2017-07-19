@@ -1,16 +1,36 @@
-﻿using System;
+﻿using EIM.Business;
+using EIM.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Business
+namespace EIM.Core
 {
     public class BusinessManager
     {
-        public BusinessMapper ObjectMapper { set; get; }
+        public BusinessManager()
+            : this(new EFDataModelProviderFactory())
+        {
+            
+        }
+
+        public BusinessManager(DataModelProviderFactory dataModelProviderFactory)
+        {
+            this.BusinessModelMapper = new BusinessModelMapper(this);
+            this.BusinessModelMapperFactory = new BusinessModelMapperFactory(this);
+            this.CacheManagers = new List<ICacheManager>();
+            this.BusinessModelProviderFactory = new BusinessModelProviderFactory(this, dataModelProviderFactory);
+        }
+
+        public BusinessModelMapper BusinessModelMapper { set; get; }
+
+        public BusinessModelMapperFactory BusinessModelMapperFactory { set; get; }
 
         public List<ICacheManager> CacheManagers { set; get; }
+
+        public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
 
         public T CreateManager<T>(params object[] args) where T : ICacheManager
         {

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using EIM.Business;
 
-namespace EIM.Data
+namespace EIM.Core
 {
     public class DataModelMapperFactory
     {
@@ -71,12 +71,12 @@ namespace EIM.Data
             {
                 object infoArgs = Activator.CreateInstance(cotrParams[0].ParameterType);
                 this.Map(infoArgs, model);
-                MappedType obj = this.BusinessManager.ObjectMapper.Map<MappedType>(infoArgs);
+                MappedType obj = this.BusinessManager.BusinessModelMapper.Map<MappedType>(infoArgs);
                 return obj;
             }
             else
             {
-                MappedType obj = this.BusinessManager.ObjectMapper.Map<MappedType>(model);
+                MappedType obj = this.BusinessManager.BusinessModelMapper.Map<MappedType>(model);
                 return obj;
             }
         }
@@ -107,7 +107,7 @@ namespace EIM.Data
         /// <param name="model"></param>
         public virtual void Map(object info, ModelType model)
         {
-            this.BusinessManager.ObjectMapper.Map(info, model);
+            this.BusinessManager.BusinessModelMapper.Map(info, model);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace EIM.Data
         /// <param name="info"></param>
         public virtual void Map(ModelType model, object info)
         {
-            this.BusinessManager.ObjectMapper.Map(model, info);
+            this.BusinessManager.BusinessModelMapper.Map(model, info);
         }
     }
 

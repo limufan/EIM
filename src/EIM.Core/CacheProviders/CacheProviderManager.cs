@@ -9,6 +9,8 @@ using log4net;
 using System.Threading;
 using EIM.Data;
 using EIM.Business;
+using EIM.Data.Org;
+using EIM.Business.Org;
 
 namespace EIM.Core
 {
@@ -22,7 +24,7 @@ namespace EIM.Core
 
             this.CacheProviders = new List<ICacheProvider>();
 
-            //this.ProvinceCacheProvider = this.CreateCacheProvider<ProvinceCacheProvider>();
+            this.CreateCacheProvider<User, UserModel>();
         }
 
         object _lock;
@@ -39,6 +41,32 @@ namespace EIM.Core
             this.CacheProviders.Add(cacheProvder as ICacheProvider);
 
             return cacheProvder;
+        }
+
+        protected virtual DatabaseCacheProvider<CacheType, ModelType> CreateCacheProvider<CacheType, ModelType>()
+            where ModelType : class
+            where CacheType : class
+        {
+            DatabaseCacheProvider<CacheType, ModelType> cacheProvider = null;
+
+            Type cacheProviderType = ReflectionHelper.GetSingleSubclass<DatabaseCacheProvider<CacheType, ModelType>>(this.GetType().Assembly);
+            if (cacheProviderType == null)
+            {
+                cacheProvider = new DatabaseCacheProvider<CacheType, ModelType>(this.DataProviderFactory);
+            }
+            else
+            {
+                cacheProvider = Activator.CreateInstance(cacheProviderType, this.DataProviderFactory) as DatabaseCacheProvider<CacheType, ModelType>;
+            }
+
+            if (cacheProvider == null)
+            {
+                throw new ArgumentNullException("cacheProvider");
+            }
+
+            this.CacheProviders.Add(cacheProvider);
+
+            return cacheProvider;
         }
 
         public ICacheProvider GetCacheProvider<CacheType, ModelType>() 
@@ -124,62 +152,6 @@ namespace EIM.Core
             {
                 this.IsLoading = false;
             }
-        }
-
-        public DateTime LastCheckRecentlyModifyCacheTime { set; get; }
-
-        public DateTime LastCheckCacheTime { set; get; }
-
-        public DateTime LastCheckBaseCacheTime { set; get; }
-
-        public void CheckRecentlyModifiedCache()
-        {
-            if (this.IsLoading)
-            {
-                return;
-            }
-
-            foreach (ICacheProvider dataProvider in this.CacheProviders)
-            {
-                dataProvider.CheckRecentlyModifiedCache();
-            }
-
-            this.LastCheckRecentlyModifyCacheTime = DateTime.Now;
-        }
-
-        public void CheckCache()
-        {
-            if (this.IsLoading)
-            {
-                return;
-            }
-
-            foreach (ICacheProvider dataProvider in this.CacheProviders)
-            {
-                dataProvider.CheckCache();
-            }
-
-            this.LastCheckCacheTime = DateTime.Now;
-        }
-
-        public void CheckBaseCache()
-        {
-            if (this.IsLoading)
-            {
-                return;
-            }
-
-            foreach (ICacheProvider dataProvider in this.CacheProviders)
-            {
-                if (dataProvider.IsBaseCache)
-                {
-                    dataProvider.CheckCache();
-                }
-            }
-
-            GC.Collect();
-
-            this.LastCheckBaseCacheTime = DateTime.Now;
         }
     }
 }

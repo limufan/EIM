@@ -6,22 +6,31 @@ using System.Text;
 using System.Threading.Tasks;
 using EIM.Data;
 using EIM.Data.Org;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EIM.Tests
+namespace EIM.UnitTest.Other
 {
-    public class DataProviderTests
+    [TestClass]
+    public class EFDataModelProviderTests : TestBase
     {
-        [Test]
+        [TestMethod]
         public void Insert()
         {
-            MigrationsConfiguration.SetInitializer();
             using (EIMDbContext dbContext = new EIMDbContext())
             {
                 EFDataModelProvider<UserModel> dataProvider = new EFDataModelProvider<UserModel>(dbContext);
                 dataProvider.Insert(new UserModel { Guid = Guid.NewGuid().ToString() });
             }
                 
+        }
+
+        [TestMethod]
+        public void FacotryTest()
+        {
+            EFDataModelProviderFactory factroy = new EFDataModelProviderFactory();
+            DataModelProvider<UserModel> userModelProvider = factroy.CreateDataProviderByModelType<UserModel>();
+
+            Assert.IsNotNull(userModelProvider);
         }
     }
 }

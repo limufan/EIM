@@ -5,11 +5,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EIM.Business
+namespace EIM.Core
 {
-    public class BusinessMapper : ObjectMapper
+    public class BusinessModelMapper : ObjectMapper
     {
-        public BusinessMapper(BusinessManager businessMapper)
+        public BusinessModelMapper(BusinessManager businessMapper)
             : base()
         {
             this._businessMapper = businessMapper;
@@ -229,9 +229,9 @@ namespace EIM.Business
         //}
     }
 
-    public class TBusinessMapper<MapType, SourceType> : BusinessMapper
+    public class TBusinessModelMapper<MapType, SourceType> : BusinessModelMapper
     {
-        public TBusinessMapper(BusinessManager businessManager)
+        public TBusinessModelMapper(BusinessManager businessManager)
             : base(businessManager)
         {
             this.BusinessManager = businessManager;
@@ -240,27 +240,27 @@ namespace EIM.Business
         public BusinessManager BusinessManager { set; get; }
     }
 
-    public class CacheMapperFactory
+    public class BusinessModelMapperFactory
     {
-        public CacheMapperFactory(BusinessManager businessManager)
+        public BusinessModelMapperFactory(BusinessManager businessManager)
         {
             this.BusinessManager = businessManager;
         }
 
         public BusinessManager BusinessManager { set; get; }
 
-        public virtual TBusinessMapper<MapType, SourceType> Create<MapType, SourceType>()
+        public virtual TBusinessModelMapper<MapType, SourceType> Create<MapType, SourceType>()
         {
-            TBusinessMapper<MapType, SourceType> mapper = null;
+            TBusinessModelMapper<MapType, SourceType> mapper = null;
 
-            Type mapperType = ReflectionHelper.GetSingleSubclass<TBusinessMapper<MapType, SourceType>>(this.GetTypes());
+            Type mapperType = ReflectionHelper.GetSingleSubclass<TBusinessModelMapper<MapType, SourceType>>(this.GetTypes());
             if (mapperType == null)
             {
-                mapper = new TBusinessMapper<MapType, SourceType>(this.BusinessManager);
+                mapper = new TBusinessModelMapper<MapType, SourceType>(this.BusinessManager);
             }
             else
             {
-                mapper = Activator.CreateInstance(mapperType, this.BusinessManager) as TBusinessMapper<MapType, SourceType>;
+                mapper = Activator.CreateInstance(mapperType, this.BusinessManager) as TBusinessModelMapper<MapType, SourceType>;
             }
 
             if (mapper == null)
@@ -271,9 +271,9 @@ namespace EIM.Business
             return mapper;
         }
 
-        public virtual BusinessMapper Create<T>()
+        public virtual BusinessModelMapper Create<T>()
         {
-            return new BusinessMapper(this.BusinessManager);
+            return new BusinessModelMapper(this.BusinessManager);
         }
 
         protected virtual Type[] GetTypes()

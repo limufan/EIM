@@ -38,6 +38,18 @@ namespace EIM.Data
             return this.CreateDataProvider(type, context);
         }
 
+        public override DataModelProvider<ModelType> CreateDataProviderByModelType<ModelType>()
+        {
+            DataModelProvider<ModelType> dataProvider = base.CreateDataProviderByModelType<ModelType>();
+            if(dataProvider == null)
+            {
+                EIMDbContext context = this.CreateDbContext("CreateDataProviderByModelType");
+                dataProvider = new EFDataModelProvider<ModelType>(context);
+            }
+
+            return dataProvider;
+        }
+
         public virtual T CreateDataProvider<T>(EIMDbContext context) where T : IDataModelProvider
         {
             T dataProvder = (T)this.CreateDataProvider(typeof(T), context);
