@@ -1,35 +1,21 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace EIM.Business
+namespace EIM.Business.CacheManagers
 {
-    public class ByIdCacheManager<T> : CacheManager<T>
+    public class ByIdCacheIndex<T>: CacheIndex<T>
         where T : class, IIdProvider
     {
-        public ByIdCacheManager()
+        public ByIdCacheIndex(CacheManager<T> cacheManager):
+            base(cacheManager)
         {
             this.DicById = new Dictionary<int, T>();
         }
 
         protected Dictionary<int, T> DicById { private set; get; }
-
-        protected override void _Add(T cache)
-        {
-            base._Add(cache);
-
-            if (this.DicById.ContainsKey(cache.Id))
-            {
-                EIMLog.Logger.WarnFormat("{0} ID 重复ID: {1}", this.GetType().Name, cache.Id);
-                return;
-            }
-            this.DicById.Add(cache.Id, cache);
-        }
 
         public virtual void Remove(int id)
         {
@@ -40,17 +26,23 @@ namespace EIM.Business
             }
         }
 
-        protected override void _Remove(T cache)
+        protected override void Add(T cache)
         {
-            base._Remove(cache);
+            if (this.DicById.ContainsKey(cache.Id))
+            {
+                EIMLog.Logger.WarnFormat("{0} ID 重复ID: {1}", this.GetType().Name, cache.Id);
+                return;
+            }
+            this.DicById.Add(cache.Id, cache);
+        }
 
+        protected override void Remove(T cache)
+        {
             this.DicById.Remove(cache.Id);
         }
 
-        protected override void _Clear()
+        protected override void Clear()
         {
-            base._Clear();
-
             this.DicById.Clear();
         }
 
@@ -58,7 +50,7 @@ namespace EIM.Business
         {
             this.EnableValidate();
 
-            this.Lock.AcquireReaderLock(10000);
+            this.AcquireReaderLock();
             try
             {
                 if (this.DicById.ContainsKey(id))
@@ -69,7 +61,7 @@ namespace EIM.Business
             }
             finally
             {
-                this.Lock.ReleaseReaderLock();
+                this.ReleaseReaderLock();
             }
         }
 

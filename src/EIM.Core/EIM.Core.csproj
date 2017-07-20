@@ -50,9 +50,9 @@
     <Compile Include="BusinessModelMapper.cs" />
     <Compile Include="BusinessModelProvider.cs" />
     <Compile Include="BusinessModelProviderFactory.cs" />
-    <Compile Include="Cache\CacheProvider.cs" />
-    <Compile Include="Cache\CacheProviderManager.cs" />
-    <Compile Include="Cache\DatabaseCacheProvider.cs" />
+    <Compile Include="CacheProviders\CacheProvider.cs" />
+    <Compile Include="CacheProviders\CacheProviderManager.cs" />
+    <Compile Include="CacheProviders\DatabaseCacheProvider.cs" />
     <Compile Include="DataModelMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

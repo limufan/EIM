@@ -22,6 +22,8 @@ namespace EIM.Core
             this.BusinessModelMapperFactory = new BusinessModelMapperFactory(this);
             this.CacheManagers = new List<ICacheManager>();
             this.BusinessModelProviderFactory = new BusinessModelProviderFactory(this, dataModelProviderFactory);
+
+            
         }
 
         public BusinessModelMapper BusinessModelMapper { set; get; }
@@ -38,6 +40,24 @@ namespace EIM.Core
             this.CacheManagers.Add(manager);
 
             return manager;
+        }
+
+        public ICacheManager CreateManagerByCacheType<CacheType>(params object[] args) where CacheType : class
+        {
+            ICacheManager manager = null;
+            Type cacheManagerType = ReflectionHelper.GetSingleSubclass<CacheManager<CacheType>>(this.GetTypes());
+            if (cacheManagerType != null)
+            {
+                manager = Activator.CreateInstance(cacheManagerType, args) as ICacheManager;
+                this.CacheManagers.Add(manager);
+            }
+
+            return manager;
+        }
+
+        protected virtual Type[] GetTypes()
+        {
+            return this.GetType().Assembly.GetExportedTypes();
         }
 
         public virtual object Get(object key, Type type)

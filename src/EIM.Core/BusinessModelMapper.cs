@@ -164,7 +164,7 @@ namespace EIM.Core
             {
                 if(resultType == typeof(int) && source is IIdProvider)
                 {
-                    result = (source as IIdProvider).ID;
+                    result = (source as IIdProvider).Id;
                     return true;
                 }
                 else if (resultType == typeof(string) && source is IGuidProvider)
@@ -186,7 +186,7 @@ namespace EIM.Core
                 IList list = source as IList;
                 foreach (object obj in list)
                 {
-                    object key = key = (source as IIdProvider).ID;
+                    object key = key = (source as IIdProvider).Id;
                     keyList.Add(key);
                 }
                 result = string.Join(",", keyList);

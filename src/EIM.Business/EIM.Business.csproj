@@ -47,19 +47,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheCounter.cs" />
-    <Compile Include="CacheManager.cs" />
-    <Compile Include="Cache\ByCodeCacheManager.cs" />
-    <Compile Include="Cache\ByGuidCacheManager.cs" />
-    <Compile Include="Cache\ByGuidCodeCacheManager.cs" />
-    <Compile Include="Cache\ByIdCacheManager.cs" />
-    <Compile Include="Cache\ByIdCodeCacheManager.cs" />
-    <Compile Include="Cache\ByIdCodeLongCodeCacheManager.cs" />
-    <Compile Include="Cache\ByIdCodeLongCodeNameCacheManager.cs" />
-    <Compile Include="Cache\ByIdCodeNameCacheManager.cs" />
-    <Compile Include="Cache\ByIdGuidCacheManager.cs" />
-    <Compile Include="DelayCacheManager.cs" />
+    <Compile Include="CacheManagers\CacheManager.cs" />
+    <Compile Include="CacheManagers\ByCodeCacheManager.cs" />
+    <Compile Include="CacheManagers\ByGuidCacheManager.cs" />
+    <Compile Include="CacheManagers\ByGuidCodeCacheManager.cs" />
+    <Compile Include="CacheManagers\ByIdCacheManager.cs" />
+    <Compile Include="CacheManagers\ByIdCodeCacheManager.cs" />
+    <Compile Include="CacheManagers\ByIdCodeLongCodeCacheManager.cs" />
+    <Compile Include="CacheManagers\ByIdCodeLongCodeNameCacheManager.cs" />
+    <Compile Include="CacheManagers\ByIdCodeNameCacheManager.cs" />
+    <Compile Include="CacheManagers\ByIdGuidCacheManager.cs" />
+    <Compile Include="CacheManagers\DelayCacheManager.cs" />
     <Compile Include="ICache.cs" />
-    <Compile Include="ICacheManager.cs" />
+    <Compile Include="CacheManagers\ICacheManager.cs" />
     <Compile Include="ObjectFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Org\User.cs" />

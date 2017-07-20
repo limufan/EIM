@@ -7,7 +7,7 @@ namespace EIM
 {
     public interface IIdProvider
     {
-        int ID { get; }
+        int Id { get; }
     }
 
     public interface ICodeProvider

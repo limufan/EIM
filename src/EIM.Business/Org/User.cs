@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace EIM.Business.Org
 {
-    public class User
+    public class User : IIdCodeProvider
     {
         public int Id { set; get; }
+
+        public string Code { set; get; }
 
         public string Guid { set; get; }
 

@@ -1,4 +1,5 @@
-﻿using EIM.Exceptions;
+﻿using EIM.Business.CacheManagers;
+using EIM.Exceptions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,13 +20,14 @@ namespace EIM.Business
         Cleared
     }
 
-    public abstract class CacheManager<T> : ICacheManager
+    public class CacheManager<T> : ICacheManager
         where T : class
     {
         public CacheManager()
         {
             this._cacheList = new HashSet<T>();
             this.Lock = new ReaderWriterLock();
+            this.CacheIndexes = new List<CacheIndex<T>>();
         }
         protected ReaderWriterLock Lock { private set; get; }
 
@@ -61,7 +63,15 @@ namespace EIM.Business
             }
         }
 
+        public List<CacheIndex<T>> CacheIndexes { set; get; }
+
         public event TEventHandler<ICacheManager> Enabled;
+
+        public event TEventHandler<T> Added;
+
+        public event TEventHandler<T> Removed;
+
+        public event TEventHandler Cleared;
 
         public virtual void EnableValidate()
         {
@@ -82,6 +92,11 @@ namespace EIM.Business
             try
             {
                 this._Add(cache);
+
+                if(this.Added != null)
+                {
+                    this.Added(cache);
+                }
             }
             finally
             {
@@ -106,6 +121,11 @@ namespace EIM.Business
             try
             {
                 this._Remove(cache);
+
+                if(this.Removed != null)
+                {
+                    this.Removed(cache);
+                }
             }
             finally
             {
@@ -148,6 +168,11 @@ namespace EIM.Business
             try
             {
                 this._Clear();
+
+                if(this.Cleared != null)
+                {
+                    this.Cleared();
+                }
             }
             finally
             {
@@ -350,6 +375,28 @@ namespace EIM.Business
         }
 
 
-        public abstract object Get(object key);
+        public object Get(object key)
+        {
+            foreach(CacheIndex<T> index in this.CacheIndexes)
+            {
+                object obj = index.Get(key);
+                if(obj != null)
+                {
+                    return obj;
+                }
+            }
+
+            return null;
+        }
+
+        public void AcquireReaderLock()
+        {
+            this.Lock.AcquireReaderLock(10000);
+        }
+
+        public void ReleaseReaderLock()
+        {
+            this.Lock.ReleaseReaderLock();
+        }
     }
 }

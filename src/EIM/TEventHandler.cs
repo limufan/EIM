@@ -7,4 +7,5 @@ namespace EIM
 {
     public delegate void TEventHandler<SenderType, ArgsType>(SenderType sender, ArgsType args);
     public delegate void TEventHandler<Args>(Args args);
+    public delegate void TEventHandler();
 }

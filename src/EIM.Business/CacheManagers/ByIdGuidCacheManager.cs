@@ -35,7 +35,7 @@ namespace EIM.Business
             }
             else
             {
-                EIMLog.Logger.Info(string.Format("{0} Guid 重复ID: {1} Guid: {2}", this.GetType().Name, cache.ID, cache.Guid));
+                EIMLog.Logger.Info(string.Format("{0} Guid 重复ID: {1} Guid: {2}", this.GetType().Name, cache.Id, cache.Guid));
             }
         }
 

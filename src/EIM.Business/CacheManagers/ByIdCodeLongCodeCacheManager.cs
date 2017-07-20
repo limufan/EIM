@@ -26,7 +26,7 @@ namespace EIM.Business
             }
             else
             {
-                EIMLog.Logger.Info(string.Format("{0} LongCode 重复ID: {1} Code: {2} LongCode: {3}", this.GetType().Name, cache.ID, cache.Code, cache.LongCode));
+                EIMLog.Logger.Info(string.Format("{0} LongCode 重复ID: {1} Code: {2} LongCode: {3}", this.GetType().Name, cache.Id, cache.Code, cache.LongCode));
             }
         }
 
