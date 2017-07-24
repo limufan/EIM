@@ -15,7 +15,7 @@ namespace EIM.Core
         {
             this.DataProviderFactory = dataProviderFactory;
             this.BusinessManager = businessManager;
-            this.DataModelMapperFactory = new DataModelMapperFactory(businessManager);
+            this.DataModelMapperFactory = businessManager.DataModelMapperFactory;
             this.DataProviders = new List<IBusinessModelProvider>();
             this.DataProviderTypes = ReflectionHelper.GetSubclass<IBusinessModelProvider>(this.GetType().Assembly);
         }

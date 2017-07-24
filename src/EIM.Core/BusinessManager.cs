@@ -1,4 +1,5 @@
 ﻿using EIM.Business;
+using EIM.Business.CacheManagers;
 using EIM.Data;
 using System;
 using System.Collections.Generic;
@@ -18,23 +19,28 @@ namespace EIM.Core
 
         public BusinessManager(DataModelProviderFactory dataModelProviderFactory)
         {
+            this.DataModelProviderFactory = dataModelProviderFactory;
+            this.DataModelMapperFactory = new DataModelMapperFactory(this);
             this.BusinessModelMapper = new BusinessModelMapper(this);
             this.BusinessModelMapperFactory = new BusinessModelMapperFactory(this);
             this.CacheManagers = new List<ICacheManager>();
             this.BusinessModelProviderFactory = new BusinessModelProviderFactory(this, dataModelProviderFactory);
-
-            
+            this.CacheProviderManager = new CacheProviderManager(this.BusinessModelProviderFactory);
         }
+
+        public DataModelMapperFactory DataModelMapperFactory { set; get; }
 
         public BusinessModelMapper BusinessModelMapper { set; get; }
 
         public BusinessModelMapperFactory BusinessModelMapperFactory { set; get; }
 
+        public DataModelProviderFactory DataModelProviderFactory { set; get; }
+
         public List<ICacheManager> CacheManagers { set; get; }
 
         public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
 
-        public 
+        public CacheProviderManager CacheProviderManager { set; get; }
 
         public T CreateManager<T>(params object[] args) where T : ICacheManager
         {

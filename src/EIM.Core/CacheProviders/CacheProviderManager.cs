@@ -24,7 +24,7 @@ namespace EIM.Core
 
             this.CacheProviders = new List<ICacheProvider>();
 
-            this.CreateCacheProvider<User, UserModel>();
+            this.CreateCacheProvider<User, UserDataModel>();
         }
 
         object _lock;

@@ -59,7 +59,7 @@
     <Compile Include="DataModelProviderFactory.cs" />
     <Compile Include="EIMDbContext.cs" />
     <Compile Include="MigrationsConfiguration.cs" />
-    <Compile Include="Org\UserModel.cs" />
+    <Compile Include="Org\UserDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

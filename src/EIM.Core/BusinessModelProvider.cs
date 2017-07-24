@@ -32,21 +32,6 @@ namespace EIM.Core
 
         public DataModelProvider<ModelType> DataProvider { set; get; }
 
-        internal virtual void OnInserted(ModelType model)
-        {
-            
-        }
-
-        internal virtual void OnUpdated(ModelType model)
-        {
-            
-        }
-
-        internal virtual void OnDeleted(ModelType model)
-        {
-            
-        }
-
         public virtual BusinessType GetById(object id)
         {
             ModelType model = this.DataProvider.SelectById(id);
@@ -78,7 +63,7 @@ namespace EIM.Core
             return models.Select(m => this.Map(m)).ToList();
         }
 
-        public virtual BusinessType Map(ModelType model)
+        protected virtual BusinessType Map(ModelType model)
         {
             return this.Mapper.Map(model);
         }

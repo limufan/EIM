@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace EIM.Business.CacheManagers
 {
-    public class UserManager : ByIdCodeGuidCacheManager<User>
+    public class UserCacheManager : ByIdCodeGuidCacheManager<User>
     {
-        public UserManager()
+        public UserCacheManager()
         {
             
         }

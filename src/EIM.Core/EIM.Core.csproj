@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessManager.cs" />
+    <Compile Include="BusinessModelManagers\UserManager.cs" />
     <Compile Include="BusinessModelMapper.cs" />
     <Compile Include="BusinessModelProvider.cs" />
     <Compile Include="BusinessModelProviderFactory.cs" />

@@ -67,10 +67,11 @@
     <Compile Include="CacheManagers\ByIdCodeNameCacheManager.cs" />
     <Compile Include="CacheManagers\ByIdGuidCacheManager.cs" />
     <Compile Include="CacheManagers\DelayCacheManager.cs" />
-    <Compile Include="CacheManagers\UserManager.cs" />
+    <Compile Include="CacheManagers\UserCacheManager.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="CacheManagers\ICacheManager.cs" />
     <Compile Include="ObjectFilter.cs" />
+    <Compile Include="Org\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Org\User.cs" />
   </ItemGroup>

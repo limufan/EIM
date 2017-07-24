@@ -19,7 +19,7 @@ namespace EIM.Data
             this.DbSetList.Add(this.Users);
         }
 
-        public DbSet<UserModel> Users { get; set; }
+        public DbSet<UserDataModel> Users { get; set; }
 
         public List<object> DbSetList { set; get; }
 
