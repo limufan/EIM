@@ -1,4 +1,5 @@
-﻿using EIM.Business.Org;
+﻿using EIM.Business.CacheIndexes;
+using EIM.Business.Org;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,24 +8,28 @@ using System.Threading.Tasks;
 
 namespace EIM.Business.CacheManagers
 {
-    public class UserManager : CacheManager<User>
+    public class UserManager : ByIdCodeGuidCacheManager<User>
     {
         public UserManager()
         {
-            this.ByIdIndex = new ByIdCacheIndex<User>(this);
-            this.CacheIndexes.Add(this.ByIdIndex);
+            
         }
 
-        public ByIdCacheIndex<User> ByIdIndex { set; get; }
+        protected KeyFuncCacheIndex<User, string> ByAccountCacheIndex { private set; get; }
 
-        public virtual User GetById(int id)
+        protected override List<CacheIndex<User>> CreateCacheIndexes()
         {
-            return this.ByIdIndex.GetById(id);
+            this.ByAccountCacheIndex = new KeyFuncCacheIndex<User, string>(this, u => u.Account);
+
+            List<CacheIndex<User>> cacheIndexes = base.CreateCacheIndexes();
+            cacheIndexes.Add(this.ByAccountCacheIndex);
+
+            return cacheIndexes;
         }
 
-        public int GetByIdCacheCount()
+        public User GetByAccount(string account)
         {
-            return this.ByIdIndex.GetByIdCacheCount();
+            return this.ByAccountCacheIndex.GetByKey(account);
         }
     }
 }

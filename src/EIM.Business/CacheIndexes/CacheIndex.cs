@@ -1,10 +1,11 @@
-﻿using System;
+﻿using EIM.Business.CacheManagers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Business.CacheManagers
+namespace EIM.Business.CacheIndexes
 {
     public abstract class CacheIndex<T> where T : class
     {
@@ -33,11 +34,11 @@ namespace EIM.Business.CacheManagers
             this.Clear();
         }
 
-        protected abstract void Add(T cache);
+        public abstract void Add(T cache);
 
-        protected abstract void Remove(T cache);
+        public abstract void Remove(T cache);
 
-        protected abstract void Clear();
+        public abstract void Clear();
 
         public abstract object Get(object key);
 

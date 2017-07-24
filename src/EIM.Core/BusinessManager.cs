@@ -34,6 +34,8 @@ namespace EIM.Core
 
         public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
 
+        public 
+
         public T CreateManager<T>(params object[] args) where T : ICacheManager
         {
             T manager = (T)Activator.CreateInstance(typeof(T), args);

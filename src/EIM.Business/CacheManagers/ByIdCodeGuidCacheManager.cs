@@ -8,29 +8,29 @@ using System.Threading.Tasks;
 
 namespace EIM.Business.CacheManagers
 {
-    public class ByIdCodeNameCacheManager<T> : ByIdCodeCacheManager<T>
-        where T : class, IIdCodeNameProvider
+    public class ByIdCodeGuidCacheManager<T> : ByIdCodeCacheManager<T>
+        where T : class, IIdCodeGuidProvider
     {
-        public ByIdCodeNameCacheManager()
+        public ByIdCodeGuidCacheManager()
         {
             
         }
 
-        protected ByNameCacheIndex<T> ByNameCacheIndex { private set; get; }
+        protected ByGuidCacheIndex<T> ByGuidCacheIndex { private set; get; }
 
         protected override List<CacheIndex<T>> CreateCacheIndexes()
         {
-            this.ByNameCacheIndex = new ByNameCacheIndex<T>(this);
+            this.ByGuidCacheIndex = new ByGuidCacheIndex<T>(this);
 
             List<CacheIndex<T>> cacheIndexes = base.CreateCacheIndexes();
-            cacheIndexes.Add(this.ByNameCacheIndex);
+            cacheIndexes.Add(this.ByGuidCacheIndex);
 
             return cacheIndexes;
         }
 
-        public T GetByName(string name)
+        public T GetByGuid(string name)
         {
-            return this.ByNameCacheIndex.GetByKey(name);
+            return this.ByGuidCacheIndex.GetByKey(name);
         }
     }
 }

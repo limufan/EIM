@@ -1,4 +1,5 @@
-﻿using EIM.Business.CacheManagers;
+﻿using EIM.Business.CacheIndexes;
+using EIM.Business.CacheManagers;
 using EIM.Exceptions;
 using System;
 using System.Collections.Concurrent;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EIM.Business
+namespace EIM.Business.CacheManagers
 {
     public enum CacheStatus
     {
@@ -20,7 +21,7 @@ namespace EIM.Business
         Cleared
     }
 
-    public class CacheManager<T> : ICacheManager
+    public abstract class CacheManager<T> : ICacheManager
         where T : class
     {
         public CacheManager()
@@ -28,6 +29,7 @@ namespace EIM.Business
             this._cacheList = new HashSet<T>();
             this.Lock = new ReaderWriterLock();
             this.CacheIndexes = new List<CacheIndex<T>>();
+            this.CacheIndexes.AddRange(this.CreateCacheIndexes());
         }
         protected ReaderWriterLock Lock { private set; get; }
 
@@ -86,6 +88,8 @@ namespace EIM.Business
 
         }
 
+        protected abstract List<CacheIndex<T>> CreateCacheIndexes();
+
         public virtual void Add(T cache)
         {
             this.Lock.AcquireWriterLock(10000);
@@ -97,11 +101,18 @@ namespace EIM.Business
                 {
                     this.Added(cache);
                 }
+
+                this.OnAdded(cache);
             }
             finally
             {
                 this.Lock.ReleaseWriterLock();
             }
+        }
+
+        protected virtual void OnAdded(T cache)
+        {
+
         }
 
         protected virtual void _Add(T cache)
@@ -375,7 +386,7 @@ namespace EIM.Business
         }
 
 
-        public object Get(object key)
+        public virtual object Get(object key)
         {
             foreach(CacheIndex<T> index in this.CacheIndexes)
             {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace EIM.Business
+namespace EIM.Business.CacheManagers
 {
     public class DelayCacheManager<T> where T : class
     {

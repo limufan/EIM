@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EIM.Business.CacheIndexes;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,91 +8,37 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EIM.Business
+namespace EIM.Business.CacheManagers
 {
     public class ByIdCacheManager<T> : CacheManager<T>
         where T : class, IIdProvider
     {
         public ByIdCacheManager()
         {
-            this.DicById = new Dictionary<int, T>();
+            
         }
+        protected ByIdCacheIndex<T> ByIdIndex { private set; get; }
 
-        protected Dictionary<int, T> DicById { private set; get; }
-
-        protected override void _Add(T cache)
+        protected override List<CacheIndex<T>> CreateCacheIndexes()
         {
-            base._Add(cache);
+            this.ByIdIndex = new ByIdCacheIndex<T>(this);
 
-            if (this.DicById.ContainsKey(cache.Id))
-            {
-                EIMLog.Logger.WarnFormat("{0} ID 重复ID: {1}", this.GetType().Name, cache.Id);
-                return;
-            }
-            this.DicById.Add(cache.Id, cache);
-        }
-
-        public virtual void Remove(int id)
-        {
-            T cache = this.GetById(id);
-            if (cache != null)
-            {
-                this.Remove(cache);
-            }
-        }
-
-        protected override void _Remove(T cache)
-        {
-            base._Remove(cache);
-
-            this.DicById.Remove(cache.Id);
-        }
-
-        protected override void _Clear()
-        {
-            base._Clear();
-
-            this.DicById.Clear();
+            return new List<CacheIndex<T>>() { this.ByIdIndex };
         }
 
         public virtual T GetById(int id)
         {
-            this.EnableValidate();
-
-            this.Lock.AcquireReaderLock(10000);
-            try
-            {
-                if (this.DicById.ContainsKey(id))
-                {
-                    return this.DicById[id];
-                }
-                return default(T);
-            }
-            finally
-            {
-                this.Lock.ReleaseReaderLock();
-            }
+            return this.ByIdIndex.GetByKey(id);
         }
 
-        public override object Get(object key)
+        public virtual bool ContainsId(int id)
         {
-            if (key == null)
-            {
-                return null;
-            }
-
-            if (key is int)
-            {
-                return this.GetById((int)key);
-            }
-
-            throw new ArgumentException(string.Format("不支持{0}类型获取", key.GetType().Name));
+            return this.ByIdIndex.ContainsKey(id);
         }
-
 
         public int GetByIdCacheCount()
         {
-            return this.DicById.Count;
+            return this.ByIdIndex.GetCacheCount();
         }
     }
 }

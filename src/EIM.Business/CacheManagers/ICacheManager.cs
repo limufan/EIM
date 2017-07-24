@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EIM.Business
+namespace EIM.Business.CacheManagers
 {
     public interface ICacheManager
     {

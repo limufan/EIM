@@ -20,6 +20,16 @@ namespace EIM
         string Guid { get; }
     }
 
+    public interface ILongCodeProvider
+    {
+        string LongCode { get; }
+    }
+
+    public interface INameProvider
+    {
+        string Name { get; }
+    }
+
     public interface IIdCodeProvider : ICodeProvider, IIdProvider
     {
 
@@ -35,19 +45,24 @@ namespace EIM
 
     }
 
-    public interface IIdCodeNameProvider : IIdCodeProvider
+    public interface IIdCodeNameProvider : IIdCodeProvider, INameProvider
     {
-        string UniqueName { get; }
+        
     }
 
-    public interface IIdCodeLongCodeNameProvider : IIdCodeLongCodeProvider
+    public interface IIdCodeGuidProvider : IIdCodeProvider, IGuidProvider
     {
-        string UniqueName { get; }
+        
     }
 
-    public interface IIdCodeLongCodeProvider : IIdCodeProvider
+    public interface IIdCodeLongCodeNameProvider : IIdCodeLongCodeProvider, INameProvider
     {
-        string LongCode { get; }
+        
+    }
+
+    public interface IIdCodeLongCodeProvider : IIdCodeProvider, ILongCodeProvider
+    {
+        
     }
 
 }

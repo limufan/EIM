@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace EIM.Business.Org
 {
-    public class User : IIdCodeProvider
+    public class User : IIdCodeGuidProvider
     {
         public int Id { set; get; }
 
         public string Code { set; get; }
 
         public string Guid { set; get; }
+
+        public string Account { set; get; }
 
 
     }

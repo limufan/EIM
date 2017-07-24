@@ -47,6 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheCounter.cs" />
+    <Compile Include="CacheIndexes\ByLongCodeCacheIndex.cs" />
+    <Compile Include="CacheIndexes\ByNameCacheIndex.cs" />
+    <Compile Include="CacheIndexes\ByCodeCacheIndex.cs" />
+    <Compile Include="CacheIndexes\ByGuidCacheIndex.cs" />
+    <Compile Include="CacheIndexes\KeyFuncCacheIndex.cs" />
+    <Compile Include="CacheIndexes\DicationaryCacheIndex.cs" />
+    <Compile Include="CacheIndexes\ByIdCacheIndex.cs" />
+    <Compile Include="CacheIndexes\CacheIndex.cs" />
+    <Compile Include="CacheManagers\ByIdCodeGuidCacheManager.cs" />
     <Compile Include="CacheManagers\CacheManager.cs" />
     <Compile Include="CacheManagers\ByCodeCacheManager.cs" />
     <Compile Include="CacheManagers\ByGuidCacheManager.cs" />
@@ -58,6 +67,7 @@
     <Compile Include="CacheManagers\ByIdCodeNameCacheManager.cs" />
     <Compile Include="CacheManagers\ByIdGuidCacheManager.cs" />
     <Compile Include="CacheManagers\DelayCacheManager.cs" />
+    <Compile Include="CacheManagers\UserManager.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="CacheManagers\ICacheManager.cs" />
     <Compile Include="ObjectFilter.cs" />
