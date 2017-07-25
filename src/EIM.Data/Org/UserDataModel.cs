@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 namespace EIM.Data.Org
 {
     [Table("org_user")]
-    public class UserDataModel
+    public class UserDataModel: IKeyProvider
     {
         public int Id { set; get; }
 
@@ -24,5 +24,10 @@ namespace EIM.Data.Org
 
         [MaxLength(50)]
         public string Code { set; get; }
+
+        public object GetKey()
+        {
+            return this.Id;
+        }
     }
 }

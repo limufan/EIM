@@ -1,4 +1,5 @@
-﻿using EIM.Business.Org;
+﻿using EIM.Business;
+using EIM.Business.Org;
 using EIM.Data;
 using EIM.Data.Org;
 using System;
@@ -14,43 +15,84 @@ namespace EIM.Core.BusinessModelManagers
         public UserManager(BusinessManager businessManager)
         {
             this.BusinessManager = businessManager;
+            this.CacheContainer = businessManager.CacheContainer;
+            this.BusinessModelProviderFactory = businessManager.BusinessModelProviderFactory;
         }
 
         public BusinessManager BusinessManager { set; get; }
 
+        public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
+
+        public CacheContainer CacheContainer { set; get; }
+
+        public event TEventHandler<User> Created;
+
+        public event TEventHandler<UserChangeInfo> Changed;
+
+        public event TEventHandler<User> Deleted;
+
         public User Create(UserCreateInfo createInfo)
         {
             using (BusinessModelProvider<User, UserDataModel> businessModelProvider = 
-                this.BusinessManager.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
+                this.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
             {
-                UserDataModel dataModel = businessModelProvider.Mapper.Map(createInfo);
+                User user = businessModelProvider.Create(createInfo);
 
-                businessModelProvider.DataProvider.Insert(dataModel);
-                return businessModelProvider.GetById(dataModel.Id);
+                this.OnCreated(user);
+
+                return user;
             }
         }
 
         public void Chnage(UserChangeInfo changeInfo)
         {
             using (BusinessModelProvider<User, UserDataModel> businessModelProvider =
-                this.BusinessManager.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
+                this.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
             {
-                UserDataModel dataModel = businessModelProvider.DataProvider.SelectById(changeInfo.ChangeUser.Id);
-                businessModelProvider.Mapper.Map(dataModel, changeInfo);
+                businessModelProvider.Change(changeInfo);
 
-                businessModelProvider.DataProvider.Update(dataModel);
+                this.OnChanged(changeInfo);
             }
         }
 
         public void Delete(User user)
         {
             using (BusinessModelProvider<User, UserDataModel> businessModelProvider =
-                this.BusinessManager.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
+                this.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
             {
-                UserDataModel dataModel = businessModelProvider.DataProvider.SelectById(user.Id);
+                businessModelProvider.Delete(user);
 
-                businessModelProvider.DataProvider.Delete(dataModel);
+                this.OnDeleted(user);
             }
         }
+
+        public void OnCreated(User user)
+        {
+            this.CacheContainer.UserCacheManager.Add(user);
+            if(this.Created != null)
+            {
+                this.Created(user);
+            }
+        }
+
+        public void OnChanged(UserChangeInfo changeInfo)
+        {
+            changeInfo.ChangeUser.Change(changeInfo);
+            if(this.Changed != null)
+            {
+                this.Changed(changeInfo);
+            }
+        }
+
+        public void OnDeleted(User user)
+        {
+            this.CacheContainer.UserCacheManager.Remove(user);
+            if(this.Deleted != null)
+            {
+                this.Deleted(user);
+            }
+        }
+
+
     }
 }

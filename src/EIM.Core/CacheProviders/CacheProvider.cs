@@ -21,7 +21,7 @@ namespace EIM.Core
     }
 
     public abstract class CacheProvider<CacheType> : ICacheProvider
-        where CacheType : class
+            where CacheType : class
     {
         public CacheProvider(CacheContainer cacheContainer, params ICacheManager[] dependentManagers)
         {

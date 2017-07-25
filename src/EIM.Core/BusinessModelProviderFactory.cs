@@ -30,22 +30,26 @@ namespace EIM.Core
 
         public Type[] DataProviderTypes { set; get; }
 
-        public virtual BusinessModelProvider<MappedType, ModelType> CreateDataProvider<MappedType, ModelType>() where ModelType : class
+        public virtual BusinessModelProvider<BusinessType, ModelType> CreateDataProvider<BusinessType, ModelType>() 
+            where BusinessType : IKeyProvider
+            where ModelType : class, IKeyProvider
         {
             DataModelProvider<ModelType> dataModelProvider = this.DataModelProviderFactory.CreateDataProviderByModelType<ModelType>();
 
-            BusinessModelProvider<MappedType, ModelType> dataProvider = this.CreateDataProvider<MappedType, ModelType>(dataModelProvider);
+            BusinessModelProvider<BusinessType, ModelType> dataProvider = this.CreateDataProvider<BusinessType, ModelType>(dataModelProvider);
             if(dataProvider == null)
             {
-                dataProvider = new BusinessModelProvider<MappedType, ModelType>(this.DataModelMapperFactory, dataModelProvider);
+                dataProvider = new BusinessModelProvider<BusinessType, ModelType>(this.DataModelMapperFactory, dataModelProvider);
             }
 
             return dataProvider;
         }
 
-        public virtual BusinessModelProvider<MappedType, ModelType> CreateDataProvider<MappedType, ModelType>(DataModelProvider<ModelType> dataModelProvider) where ModelType : class
+        public virtual BusinessModelProvider<BusinessType, ModelType> CreateDataProvider<BusinessType, ModelType>(DataModelProvider<ModelType> dataModelProvider)
+            where BusinessType : IKeyProvider
+            where ModelType : class, IKeyProvider
         {
-            BusinessModelProvider<MappedType, ModelType> dataProvider = this.CreateSubclassDataProvider<BusinessModelProvider<MappedType, ModelType>>(dataModelProvider);
+            BusinessModelProvider<BusinessType, ModelType> dataProvider = this.CreateSubclassDataProvider<BusinessModelProvider<BusinessType, ModelType>>(dataModelProvider);
 
             return dataProvider;
         }

@@ -5,6 +5,11 @@ using System.Text;
 
 namespace EIM
 {
+    public interface IKeyProvider
+    {
+        object GetKey();
+    }
+
     public interface IIdProvider
     {
         int Id { get; }

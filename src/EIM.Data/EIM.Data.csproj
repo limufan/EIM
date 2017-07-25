@@ -53,11 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModelMapper.cs" />
+    <Compile Include="DataModelMapperFactory.cs" />
     <Compile Include="EFDataModelProvider.cs" />
     <Compile Include="EFDataModelProviderFactory.cs" />
     <Compile Include="DataModelProvider.cs" />
     <Compile Include="DataModelProviderFactory.cs" />
+    <Compile Include="EFDbTransaction.cs" />
     <Compile Include="EIMDbContext.cs" />
+    <Compile Include="IDbTransaction.cs" />
     <Compile Include="MigrationsConfiguration.cs" />
     <Compile Include="Org\UserDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

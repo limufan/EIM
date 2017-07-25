@@ -48,13 +48,11 @@
   <ItemGroup>
     <Compile Include="BusinessManager.cs" />
     <Compile Include="BusinessModelManagers\UserManager.cs" />
-    <Compile Include="BusinessModelMapper.cs" />
     <Compile Include="BusinessModelProvider.cs" />
     <Compile Include="BusinessModelProviderFactory.cs" />
     <Compile Include="CacheProviders\CacheProvider.cs" />
     <Compile Include="CacheProviders\CacheProviderManager.cs" />
     <Compile Include="CacheProviders\DatabaseCacheProvider.cs" />
-    <Compile Include="DataModelMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using EIM.Business;
+using EIM.Business.CacheManagers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EIM.Core
+namespace EIM.Business
 {
     public class BusinessModelMapper : ObjectMapper
     {
@@ -37,18 +38,18 @@ namespace EIM.Core
             //{
             //    return true;
             //}
-            //else if (this.KeyToObject(source, resultType, out result))
-            //{
-            //    return true;
-            //}
-             if (this.ObjectToKey(source, resultType, out result))
+            if (this.KeyToObject(source, resultType, out result))
             {
                 return true;
             }
-            //else if (this.ModelToObject(source, resultType, out result))
-            //{
-            //    return true;
-            //}
+            else if (this.ObjectToKey(source, resultType, out result))
+            {
+                return true;
+            }
+            else if (this.ModelToObject(source, resultType, out result))
+            {
+                return true;
+            }
 
             return base.Map(source, resultType, out result);
         }
@@ -59,7 +60,7 @@ namespace EIM.Core
         //    if (source is string && resultType == typeof(Department))
         //    {
         //        string orgId = source as string;
-        //        result = this._businessMapper.DepartmentManager.GetByOrgId(orgId);
+        //        result = this.CacheContainer.DepartmentManager.GetByOrgId(orgId);
         //        return true;
         //    }
         //    return false;
@@ -85,14 +86,14 @@ namespace EIM.Core
         //        Guid? orgId = source as Guid?;
         //        if (orgId.HasValue)
         //        {
-        //            result = this._businessMapper.DepartmentManager.GetByOrgId(orgId.Value.ToString());
+        //            result = this.CacheContainer.DepartmentManager.GetByOrgId(orgId.Value.ToString());
         //        }
         //        return true;
         //    }
         //    else if (source is Guid && resultType == typeof(Department))
         //    {
         //        Guid orgId = (Guid)source;
-        //        result = this._businessMapper.DepartmentManager.GetByOrgId(orgId.ToString());
+        //        result = this.CacheContainer.DepartmentManager.GetByOrgId(orgId.ToString());
         //        return true;
         //    }
         //    return false;
@@ -124,38 +125,38 @@ namespace EIM.Core
         //    return false;
         //}
 
-        //private bool KeyToObject(object source, Type resultType, out object result)
-        //{
-        //    result = null;
+        private bool KeyToObject(object source, Type resultType, out object result)
+        {
+            result = null;
 
-        //    if ((source is string || source is int) && !ReflectionHelper.IsIList(resultType))
-        //    {
-        //        if (this._businessMapper.Contains(resultType))
-        //        {
-        //            object key = source;
-        //            result = this._businessMapper.Get(key, resultType);
-        //            return true;
-        //        }
-        //    }
-        //    else if (source is string && ReflectionHelper.IsIList(resultType))
-        //    {
-        //        Type resultItemType = ReflectionHelper.GetCollectionItemType(resultType);
-        //        if (this._businessMapper.Contains(resultItemType))
-        //        {
-        //            ICacheManager manager = this._businessMapper.GetManager(resultItemType);
-        //            string formatedKey = source as string;
-        //            string[] keys = formatedKey.Split(',');
-        //            result = Activator.CreateInstance(resultType);
-        //            IList resultList = result as IList;
-        //            foreach (string key in keys)
-        //            {
-        //                resultList.Add(manager.Get(key));
-        //            }
-        //            return true;
-        //        }   
-        //    }
-        //    return false;
-        //}
+            if ((source is string || source is int) && !ReflectionHelper.IsIList(resultType))
+            {
+                if (this.CacheContainer.Contains(resultType))
+                {
+                    object key = source;
+                    result = this.CacheContainer.Get(key, resultType);
+                    return true;
+                }
+            }
+            else if (source is string && ReflectionHelper.IsIList(resultType))
+            {
+                Type resultItemType = ReflectionHelper.GetCollectionItemType(resultType);
+                if (this.CacheContainer.Contains(resultItemType))
+                {
+                    ICacheManager manager = this.CacheContainer.GetManager(resultItemType);
+                    string formatedKey = source as string;
+                    string[] keys = formatedKey.Split(',');
+                    result = Activator.CreateInstance(resultType);
+                    IList resultList = result as IList;
+                    foreach (string key in keys)
+                    {
+                        resultList.Add(manager.Get(key));
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private bool ObjectToKey(object source, Type resultType, out object result)
         {
@@ -198,37 +199,37 @@ namespace EIM.Core
             return false;
         }
 
-        //private bool ModelToObject(object source, Type resultType, out object result)
-        //{
-        //    result = null;
-        //    Type sourceType = source.GetType();
+        private bool ModelToObject(object source, Type resultType, out object result)
+        {
+            result = null;
+            Type sourceType = source.GetType();
 
-        //    if ((ReflectionHelper.Is<IIdProvider>(sourceType) || ReflectionHelper.Is<ICodeProvider>(sourceType) || ReflectionHelper.Is<IGuidProvider>(sourceType)) 
-        //        && !this._businessMapper.Contains(sourceType) 
-        //        && this._businessMapper.Contains(resultType))
-        //    {
-        //        if (source is IIdProvider)
-        //        {
-        //            IIdProvider idProviderSource = source as IIdProvider;
-        //            result = this._businessMapper.Get(idProviderSource.ID, resultType);
-        //            return true;
-        //        }
-        //        else if (source is IGuidProvider)
-        //        {
-        //            IGuidProvider guidProviderSource = source as IGuidProvider;
-        //            result = this._businessMapper.Get(guidProviderSource.Guid, resultType);
-        //            return true;
-        //        }
-        //        else if (source is ICodeProvider)
-        //        {
-        //            ICodeProvider codeProviderSource = source as ICodeProvider;
-        //            result = this._businessMapper.Get(codeProviderSource.Code, resultType);
-        //            return true;
-        //        }
-        //    }
+            if ((ReflectionHelper.Is<IIdProvider>(sourceType) || ReflectionHelper.Is<ICodeProvider>(sourceType) || ReflectionHelper.Is<IGuidProvider>(sourceType))
+                && !this.CacheContainer.Contains(sourceType)
+                && this.CacheContainer.Contains(resultType))
+            {
+                if (source is IIdProvider)
+                {
+                    IIdProvider idProviderSource = source as IIdProvider;
+                    result = this.CacheContainer.Get(idProviderSource.Id, resultType);
+                    return true;
+                }
+                else if (source is IGuidProvider)
+                {
+                    IGuidProvider guidProviderSource = source as IGuidProvider;
+                    result = this.CacheContainer.Get(guidProviderSource.Guid, resultType);
+                    return true;
+                }
+                else if (source is ICodeProvider)
+                {
+                    ICodeProvider codeProviderSource = source as ICodeProvider;
+                    result = this.CacheContainer.Get(codeProviderSource.Code, resultType);
+                    return true;
+                }
+            }
 
-        //    return false;
-        //}
+            return false;
+        }
     }
 
     public class TBusinessModelMapper<MapType, SourceType> : BusinessModelMapper
@@ -237,48 +238,6 @@ namespace EIM.Core
             : base(cacheContainer)
         {
             
-        }
-    }
-
-    public class BusinessModelMapperFactory
-    {
-        public BusinessModelMapperFactory(CacheContainer cacheContainer)
-        {
-            this.CacheContainer = cacheContainer;
-        }
-
-        public CacheContainer CacheContainer { set; get; }
-
-        public virtual TBusinessModelMapper<MapType, SourceType> Create<MapType, SourceType>()
-        {
-            TBusinessModelMapper<MapType, SourceType> mapper = null;
-
-            Type mapperType = ReflectionHelper.GetSingleSubclass<TBusinessModelMapper<MapType, SourceType>>(this.GetTypes());
-            if (mapperType == null)
-            {
-                mapper = new TBusinessModelMapper<MapType, SourceType>(this.CacheContainer);
-            }
-            else
-            {
-                mapper = Activator.CreateInstance(mapperType, this.CacheContainer) as TBusinessModelMapper<MapType, SourceType>;
-            }
-
-            if (mapper == null)
-            {
-                throw new ArgumentNullException("mapper");
-            }
-
-            return mapper;
-        }
-
-        public virtual BusinessModelMapper Create<T>()
-        {
-            return new BusinessModelMapper(this.CacheContainer);
-        }
-
-        protected virtual Type[] GetTypes()
-        {
-            return this.GetType().Assembly.GetExportedTypes();
         }
     }
 }

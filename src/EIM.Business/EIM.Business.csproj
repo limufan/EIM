@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessModelMapper.cs" />
+    <Compile Include="BusinessModelMapperFactory.cs" />
     <Compile Include="CacheContainer.cs" />
     <Compile Include="CacheCounter.cs" />
     <Compile Include="CacheIndexes\ByLongCodeCacheIndex.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="CacheManagers\ByIdGuidCacheManager.cs" />
     <Compile Include="CacheManagers\DelayCacheManager.cs" />
     <Compile Include="CacheManagers\UserCacheManager.cs" />
+    <Compile Include="IChangeInfo.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="CacheManagers\ICacheManager.cs" />
     <Compile Include="ObjectFilter.cs" />

@@ -43,6 +43,8 @@ namespace EIM.Data
 
         public abstract bool Exist(ModelType model);
 
+        public abstract IDbTransaction BeginTransaction();
+
         public virtual void Dispose()
         {
             this.Close();

@@ -137,5 +137,11 @@ namespace EIM.Data
         {
             this.DbContext.Dispose();
         }
+
+        public override IDbTransaction BeginTransaction()
+        {
+            DbContextTransaction transaction = this.DbContext.Database.BeginTransaction();
+            return new EFDbTransaction(transaction);
+        }
     }
 }

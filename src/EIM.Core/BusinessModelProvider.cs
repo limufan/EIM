@@ -10,6 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using EIM.Core;
 using EIM.Data;
+using EIM.Exceptions;
+using EIM.Business;
 
 namespace EIM.Core
 {
@@ -19,7 +21,8 @@ namespace EIM.Core
     }
 
     public class BusinessModelProvider<BusinessType, ModelType> : IDisposable, IBusinessModelProvider
-        where ModelType : class
+        where BusinessType : IKeyProvider
+        where ModelType : class, IKeyProvider
     {
         public BusinessModelProvider(DataModelMapperFactory mapperFactory, DataModelProvider<ModelType> dataProvider)
         {
@@ -31,6 +34,35 @@ namespace EIM.Core
         public DataModelMapper<BusinessType, ModelType> Mapper { set; get; }
 
         public DataModelProvider<ModelType> DataProvider { set; get; }
+
+        public virtual BusinessType Create(object createInfo)
+        {
+            ModelType dataModel = this.Mapper.Map(createInfo);
+            this.DataProvider.Insert(dataModel);
+
+            BusinessType businessObject = this.GetById(dataModel.GetKey());
+            if (businessObject == null)
+            {
+                throw new EIMException("创建对象失败:" +  typeof(BusinessType).Name);
+            }
+
+            return businessObject;
+        }
+
+        public virtual void Change(IChangeInfo changeInfo)
+        {
+            ModelType dataModel = this.DataProvider.SelectById(changeInfo.GetKey());
+            this.Mapper.Map(dataModel, changeInfo);
+
+            this.DataProvider.Update(dataModel);
+        }
+
+        public virtual void Delete(BusinessType businessObject)
+        {
+            ModelType dataModel = this.DataProvider.SelectById(businessObject.GetKey());
+
+            this.DataProvider.Delete(dataModel);
+        }
 
         public virtual BusinessType GetById(object id)
         {

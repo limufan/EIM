@@ -12,10 +12,12 @@ namespace EIM.Business
         public CacheContainer()
         {
             this.CacheManagers = new List<ICacheManager>();
+            this.UserCacheManager = this.CreateManager<UserCacheManager>();
         }
 
         public List<ICacheManager> CacheManagers { set; get; }
 
+        public UserCacheManager UserCacheManager { set; get; }
 
         public T CreateManager<T>(params object[] args) where T : ICacheManager
         {

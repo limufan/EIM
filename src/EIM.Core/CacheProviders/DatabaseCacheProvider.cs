@@ -22,9 +22,9 @@ namespace EIM.Core
         ReaderWriterLockedList<object> UnloadIdList { get; }
     }
 
-    public class DatabaseCacheProvider<CacheType, ModelType> : CacheProvider<CacheType>, IDatabaseCacheProvider
-        where ModelType : class
-        where CacheType: class
+    public class DatabaseCacheProvider<BusinessType, ModelType> : CacheProvider<BusinessType>, IDatabaseCacheProvider
+            where BusinessType : class, IKeyProvider
+            where ModelType : class, IKeyProvider
     {
 
         public DatabaseCacheProvider(BusinessModelProviderFactory businessModelProviderFactory, params ICacheManager[] dependentManagers)
@@ -38,7 +38,7 @@ namespace EIM.Core
             }
 #endif
             this.BusinessModelProviderFactory = businessModelProviderFactory;
-            this.CacheMapper = businessModelProviderFactory.DataModelMapperFactory.CreateMapper<CacheType, ModelType>();
+            this.CacheMapper = businessModelProviderFactory.DataModelMapperFactory.CreateMapper<BusinessType, ModelType>();
             this.UnloadIdList = new ReaderWriterLockedList<object>();
         }
 
@@ -51,13 +51,13 @@ namespace EIM.Core
 
         public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
 
-        public DataModelMapper<CacheType, ModelType> CacheMapper { set; get; }
+        public DataModelMapper<BusinessType, ModelType> CacheMapper { set; get; }
 
         public bool DisableCheckLogger { set; get; }
 
-        protected virtual BusinessModelProvider<CacheType, ModelType> CreateDataProvider()
+        protected virtual BusinessModelProvider<BusinessType, ModelType> CreateDataProvider()
         {
-            return this.BusinessModelProviderFactory.CreateDataProvider<CacheType, ModelType>();
+            return this.BusinessModelProviderFactory.CreateDataProvider<BusinessType, ModelType>();
         }
 
         protected override void OnLoaded()
@@ -66,12 +66,12 @@ namespace EIM.Core
             this._lastCheckTime = DateTime.Now;
         }
 
-        protected override List<CacheType> GetCaches()
+        protected override List<BusinessType> GetCaches()
         {
             object addLock = new object();
             IList<ModelType> models = this.GetModels();
 
-            List<CacheType> caches = models.AsParallel()
+            List<BusinessType> caches = models.AsParallel()
                 .WithDegreeOfParallelism(Environment.ProcessorCount / 2)
                 .Select(model => this.Map(model))
                 .ToList();
@@ -79,9 +79,9 @@ namespace EIM.Core
             return caches;
         }
 
-        protected virtual CacheType AddCache(ModelType model)
+        protected virtual BusinessType AddCache(ModelType model)
         {
-            CacheType cache = this.Map(model);
+            BusinessType cache = this.Map(model);
             this.CacheManager.Add(cache);
 
             return cache;
@@ -97,13 +97,13 @@ namespace EIM.Core
 
         public virtual IList<ModelType> GetModels()
         {
-            using (BusinessModelProvider<CacheType, ModelType> dataProvider = this.CreateDataProvider())
+            using (BusinessModelProvider<BusinessType, ModelType> dataProvider = this.CreateDataProvider())
             {
                 return dataProvider.DataProvider.GetModels();
             }
         }
 
-        public virtual CacheType Map(ModelType model)
+        public virtual BusinessType Map(ModelType model)
         {
             return this.CacheMapper.Map(model);
         }
