@@ -10,12 +10,12 @@ namespace EIM.Core
 {
     public class DataModelMapperFactory
     {
-        public DataModelMapperFactory(BusinessManager businessManager)
+        public DataModelMapperFactory(CacheContainer cacheContainer)
         {
-            this.BusinessManager = businessManager;
+            this.CacheContainer = cacheContainer;
         }
 
-        public BusinessManager BusinessManager { set; get; }
+        public CacheContainer CacheContainer { set; get; }
 
         public DataModelMapper<MappedType, ModelType> CreateMapper<MappedType, ModelType>()
         {
@@ -24,11 +24,11 @@ namespace EIM.Core
             Type mapperType = ReflectionHelper.GetSingleSubclass<DataModelMapper<MappedType, ModelType>>(typeof(DataModelMapperFactory).Assembly);
             if (mapperType == null)
             {
-                mapper = new DataModelMapper<MappedType, ModelType>(this.BusinessManager);
+                mapper = new DataModelMapper<MappedType, ModelType>(this.CacheContainer);
             }
             else
             {
-                mapper = Activator.CreateInstance(mapperType, this.BusinessManager) as DataModelMapper<MappedType, ModelType>;
+                mapper = Activator.CreateInstance(mapperType, this.CacheContainer) as DataModelMapper<MappedType, ModelType>;
             }
 
             if (mapper == null)
@@ -48,12 +48,12 @@ namespace EIM.Core
 
     public class DataModelMapper<MappedType, ModelType> : IDataModelMapper
     {
-        public DataModelMapper(BusinessManager businessManager)
+        public DataModelMapper(CacheContainer cacheContainer)
         {
-            this.BusinessManager = businessManager;
+            this.BusinessModelMapper = new BusinessModelMapper(cacheContainer);
         }
 
-        public BusinessManager BusinessManager { set; get; }
+        public BusinessModelMapper BusinessModelMapper { set; get; }
 
         public virtual MappedType Map(ModelType model)
         {
@@ -71,12 +71,12 @@ namespace EIM.Core
             {
                 object infoArgs = Activator.CreateInstance(cotrParams[0].ParameterType);
                 this.Map(infoArgs, model);
-                MappedType obj = this.BusinessManager.BusinessModelMapper.Map<MappedType>(infoArgs);
+                MappedType obj = this.BusinessModelMapper.Map<MappedType>(infoArgs);
                 return obj;
             }
             else
             {
-                MappedType obj = this.BusinessManager.BusinessModelMapper.Map<MappedType>(model);
+                MappedType obj = this.BusinessModelMapper.Map<MappedType>(model);
                 return obj;
             }
         }
@@ -107,7 +107,7 @@ namespace EIM.Core
         /// <param name="model"></param>
         public virtual void Map(object info, ModelType model)
         {
-            this.BusinessManager.BusinessModelMapper.Map(info, model);
+            this.BusinessModelMapper.Map(info, model);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace EIM.Core
         /// <param name="info"></param>
         public virtual void Map(ModelType model, object info)
         {
-            this.BusinessManager.BusinessModelMapper.Map(model, info);
+            this.BusinessModelMapper.Map(model, info);
         }
     }
 

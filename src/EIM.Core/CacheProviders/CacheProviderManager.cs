@@ -16,11 +16,10 @@ namespace EIM.Core
 {
     public class CacheProviderManager
     {
-        public CacheProviderManager(BusinessModelProviderFactory dataProviderFactory)
+        public CacheProviderManager(BusinessModelProviderFactory businessModelProviderFactory)
         {
             this._lock = new object();
-            this.DataProviderFactory = dataProviderFactory;
-            this.BusinessManager = dataProviderFactory.BusinessManager;
+            this.BusinessModelProviderFactory = businessModelProviderFactory;
 
             this.CacheProviders = new List<ICacheProvider>();
 
@@ -29,15 +28,13 @@ namespace EIM.Core
 
         object _lock;
 
-        public BusinessModelProviderFactory DataProviderFactory { private set; get; }
-
-        public BusinessManager BusinessManager { private set; get; }
+        public BusinessModelProviderFactory BusinessModelProviderFactory { private set; get; }
 
         public List<ICacheProvider> CacheProviders { private set; get; }
 
         protected virtual T CreateCacheProvider<T>()
         {
-            T cacheProvder = (T)Activator.CreateInstance(typeof(T), this.DataProviderFactory);
+            T cacheProvder = (T)Activator.CreateInstance(typeof(T), this.BusinessModelProviderFactory);
             this.CacheProviders.Add(cacheProvder as ICacheProvider);
 
             return cacheProvder;
@@ -52,11 +49,11 @@ namespace EIM.Core
             Type cacheProviderType = ReflectionHelper.GetSingleSubclass<DatabaseCacheProvider<CacheType, ModelType>>(this.GetType().Assembly);
             if (cacheProviderType == null)
             {
-                cacheProvider = new DatabaseCacheProvider<CacheType, ModelType>(this.DataProviderFactory);
+                cacheProvider = new DatabaseCacheProvider<CacheType, ModelType>(this.BusinessModelProviderFactory);
             }
             else
             {
-                cacheProvider = Activator.CreateInstance(cacheProviderType, this.DataProviderFactory) as DatabaseCacheProvider<CacheType, ModelType>;
+                cacheProvider = Activator.CreateInstance(cacheProviderType, this.BusinessModelProviderFactory) as DatabaseCacheProvider<CacheType, ModelType>;
             }
 
             if (cacheProvider == null)

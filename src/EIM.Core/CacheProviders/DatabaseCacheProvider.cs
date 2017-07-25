@@ -27,8 +27,8 @@ namespace EIM.Core
         where CacheType: class
     {
 
-        public DatabaseCacheProvider(BusinessModelProviderFactory dataProviderFactory, params ICacheManager[] dependentManagers)
-            : base(dataProviderFactory, dependentManagers)
+        public DatabaseCacheProvider(BusinessModelProviderFactory businessModelProviderFactory, params ICacheManager[] dependentManagers)
+            : base(businessModelProviderFactory.CacheContainer, dependentManagers)
         {
 #if DEBUG
             this.MaxCount = ConfigurationManagerHelper.GetIntValue("DataLoadMaxCount");
@@ -37,9 +37,8 @@ namespace EIM.Core
                 this.MaxCount = int.MaxValue;
             }
 #endif
-            this.DataProviderFactory = dataProviderFactory;
-            this.BusinessManager = dataProviderFactory.BusinessManager;
-            this.CacheMapper = dataProviderFactory.DataModelMapperFactory.CreateMapper<CacheType, ModelType>();
+            this.BusinessModelProviderFactory = businessModelProviderFactory;
+            this.CacheMapper = businessModelProviderFactory.DataModelMapperFactory.CreateMapper<CacheType, ModelType>();
             this.UnloadIdList = new ReaderWriterLockedList<object>();
         }
 
@@ -50,17 +49,15 @@ namespace EIM.Core
 
         public ReaderWriterLockedList<object> UnloadIdList { private set; get; }
 
-        public BusinessModelProviderFactory DataProviderFactory { set; get; }
+        public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
 
         public DataModelMapper<CacheType, ModelType> CacheMapper { set; get; }
-
-        public BusinessManager BusinessManager { set; get; }
 
         public bool DisableCheckLogger { set; get; }
 
         protected virtual BusinessModelProvider<CacheType, ModelType> CreateDataProvider()
         {
-            return this.DataProviderFactory.CreateDataProvider<CacheType, ModelType>();
+            return this.BusinessModelProviderFactory.CreateDataProvider<CacheType, ModelType>();
         }
 
         protected override void OnLoaded()

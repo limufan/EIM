@@ -23,12 +23,12 @@ namespace EIM.Core
     public abstract class CacheProvider<CacheType> : ICacheProvider
         where CacheType : class
     {
-        public CacheProvider(BusinessModelProviderFactory dataProviderFactory, params ICacheManager[] dependentManagers)
+        public CacheProvider(CacheContainer cacheContainer, params ICacheManager[] dependentManagers)
         {
             this._lock = new object();
             this._loading = false;
             this._watch = new Stopwatch();
-            this.CacheManager = dataProviderFactory.BusinessManager.GetManager<CacheType>();
+            this.CacheManager = cacheContainer.GetManager<CacheType>();
             if (this.CacheManager == null)
             {
                 throw new ArgumentNullException("this.CacheManager");

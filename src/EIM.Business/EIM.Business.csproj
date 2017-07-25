@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheContainer.cs" />
     <Compile Include="CacheCounter.cs" />
     <Compile Include="CacheIndexes\ByLongCodeCacheIndex.cs" />
     <Compile Include="CacheIndexes\ByNameCacheIndex.cs" />

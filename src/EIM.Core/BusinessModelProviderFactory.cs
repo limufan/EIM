@@ -11,18 +11,18 @@ namespace EIM.Core
 {
     public class BusinessModelProviderFactory
     {
-        public BusinessModelProviderFactory(BusinessManager businessManager, DataModelProviderFactory dataProviderFactory)
+        public BusinessModelProviderFactory(CacheContainer cacheContainer, DataModelProviderFactory dataProviderFactory)
         {
-            this.DataProviderFactory = dataProviderFactory;
-            this.BusinessManager = businessManager;
-            this.DataModelMapperFactory = businessManager.DataModelMapperFactory;
+            this.DataModelProviderFactory = dataProviderFactory;
+            this.CacheContainer = cacheContainer;
+            this.DataModelMapperFactory = new DataModelMapperFactory(this.CacheContainer);
             this.DataProviders = new List<IBusinessModelProvider>();
             this.DataProviderTypes = ReflectionHelper.GetSubclass<IBusinessModelProvider>(this.GetType().Assembly);
         }
 
-        public DataModelProviderFactory DataProviderFactory { private set; get; }
+        public DataModelProviderFactory DataModelProviderFactory { private set; get; }
 
-        public BusinessManager BusinessManager { private set; get; }
+        public CacheContainer CacheContainer { private set; get; }
 
         public DataModelMapperFactory DataModelMapperFactory { private set; get; }
 
@@ -32,7 +32,7 @@ namespace EIM.Core
 
         public virtual BusinessModelProvider<MappedType, ModelType> CreateDataProvider<MappedType, ModelType>() where ModelType : class
         {
-            DataModelProvider<ModelType> dataModelProvider = this.DataProviderFactory.CreateDataProviderByModelType<ModelType>();
+            DataModelProvider<ModelType> dataModelProvider = this.DataModelProviderFactory.CreateDataProviderByModelType<ModelType>();
 
             BusinessModelProvider<MappedType, ModelType> dataProvider = this.CreateDataProvider<MappedType, ModelType>(dataModelProvider);
             if(dataProvider == null)
