@@ -17,9 +17,12 @@ namespace EIM.Data
         {
             this.DbSetList = new List<object>();
             this.DbSetList.Add(this.Users);
+            this.DbSetList.Add(this.Departments);
         }
 
         public DbSet<UserDataModel> Users { get; set; }
+
+        public DbSet<DepartmentDataModel> Departments { get; set; }
 
         public List<object> DbSetList { set; get; }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using EIM.Business;
 using EIM.Core;
-
+using System.Reflection;
 
 namespace EIM.Data
 {
@@ -13,12 +13,12 @@ namespace EIM.Data
 
     public class EFDataModelProviderFactory : DataModelProviderFactory
     {
-        public EFDataModelProviderFactory()
+        public EFDataModelProviderFactory(params Assembly[] assemblys) : base(assemblys)
         {
 
         }
 
-        public EIMDbContext CreateDbContext(string code)
+        public virtual EIMDbContext CreateDbContext(string code)
         {
             EIMDbContext context = new EIMDbContext();
             return context;

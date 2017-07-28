@@ -55,14 +55,16 @@
   <ItemGroup>
     <Compile Include="DataModelMapper.cs" />
     <Compile Include="DataModelMapperFactory.cs" />
-    <Compile Include="EFDataModelProvider.cs" />
+    <Compile Include="DataModelProviders\UserDataModelProvider.cs" />
+    <Compile Include="DataModelProviders\EFDataModelProvider.cs" />
     <Compile Include="EFDataModelProviderFactory.cs" />
-    <Compile Include="DataModelProvider.cs" />
-    <Compile Include="DataModelProviderFactory.cs" />
+    <Compile Include="DataModelProviders\DataModelProvider.cs" />
+    <Compile Include="DataModelProviders\DataModelProviderFactory.cs" />
     <Compile Include="EFDbTransaction.cs" />
     <Compile Include="EIMDbContext.cs" />
     <Compile Include="IDbTransaction.cs" />
     <Compile Include="MigrationsConfiguration.cs" />
+    <Compile Include="Org\DepartmentDataModel.cs" />
     <Compile Include="Org\UserDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,5 +81,6 @@
       <Name>EIM</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

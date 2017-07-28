@@ -5,15 +5,22 @@ using System.Linq;
 using System.Text;
 using EIM.Business;
 using EIM.Core;
+using System.Reflection;
 
 namespace EIM.Data
 {
     public abstract class DataModelProviderFactory
     {
-        public DataModelProviderFactory()
+        public DataModelProviderFactory(params Assembly[] assemblys)
         {
             this.DataProviders = new List<IDataModelProvider>();
-            this.DataProviderTypes = ReflectionHelper.GetSubclass<IDataModelProvider>(this.GetType().Assembly);
+            List<Type> dataProviderTypes = new List<Type>();
+            if (assemblys != null && assemblys.Length > 0)
+            {
+                dataProviderTypes.AddRange(ReflectionHelper.GetSubclass<IDataModelProvider>(assemblys));
+            }
+            dataProviderTypes.AddRange(ReflectionHelper.GetSubclass<IDataModelProvider>(typeof(DataModelProviderFactory).Assembly));
+            this.DataProviderTypes = dataProviderTypes.ToArray();
         }
 
         public List<IDataModelProvider> DataProviders { private set; get; }

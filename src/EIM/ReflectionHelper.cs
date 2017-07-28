@@ -432,6 +432,19 @@ namespace EIM
             return GetSubclass<T>(types);
         }
 
+        public static Type[] GetSubclass<T>(Assembly[] assemblys)
+        {
+            List<Type> typeList = new List<Type>();
+            foreach(Assembly assembly in assemblys)
+            {
+                Type[] types = assembly.GetExportedTypes();
+
+                typeList.AddRange(GetSubclass<T>(types));
+            }
+
+            return typeList.ToArray();
+        }
+
         public static Type GetSingleSubclass<T>(Assembly assembly)
         {
             Type[] types = assembly.GetExportedTypes();
