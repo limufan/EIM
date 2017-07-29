@@ -10,7 +10,7 @@ namespace EIM.Tests
 {
     public class TestEFDataModelProviderFactory: EFDataModelProviderFactory
     {
-        public TestEFDataModelProviderFactory(params Assembly[] assemblys) : base(assemblys)
+        public TestEFDataModelProviderFactory() : base(typeof(TestEFDataModelProviderFactory).Assembly)
         {
 
         }

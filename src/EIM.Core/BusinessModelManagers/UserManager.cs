@@ -34,7 +34,7 @@ namespace EIM.Core.BusinessModelManagers
         public User Create(UserCreateInfo createInfo)
         {
             using (BusinessModelProvider<User, UserDataModel> businessModelProvider = 
-                this.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
+                this.BusinessModelProviderFactory.CreateProvider<User, UserDataModel>())
             {
                 User user = businessModelProvider.Create(createInfo);
 
@@ -47,7 +47,7 @@ namespace EIM.Core.BusinessModelManagers
         public void Chnage(UserChangeInfo changeInfo)
         {
             using (BusinessModelProvider<User, UserDataModel> businessModelProvider =
-                this.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
+                this.BusinessModelProviderFactory.CreateProvider<User, UserDataModel>())
             {
                 businessModelProvider.Change(changeInfo);
 
@@ -58,7 +58,7 @@ namespace EIM.Core.BusinessModelManagers
         public void Delete(User user)
         {
             using (BusinessModelProvider<User, UserDataModel> businessModelProvider =
-                this.BusinessModelProviderFactory.CreateDataProvider<User, UserDataModel>())
+                this.BusinessModelProviderFactory.CreateProvider<User, UserDataModel>())
             {
                 businessModelProvider.Delete(user);
 

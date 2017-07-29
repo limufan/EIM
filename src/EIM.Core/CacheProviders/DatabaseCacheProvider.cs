@@ -57,7 +57,7 @@ namespace EIM.Core
 
         protected virtual BusinessModelProvider<BusinessType, ModelType> CreateDataProvider()
         {
-            return this.BusinessModelProviderFactory.CreateDataProvider<BusinessType, ModelType>();
+            return this.BusinessModelProviderFactory.CreateProvider<BusinessType, ModelType>();
         }
 
         protected override void OnLoaded()

@@ -452,6 +452,20 @@ namespace EIM
             return GetSingleSubclass<T>(types);
         }
 
+        public static Type GetSingleSubclass<T>(Assembly[] assemblys)
+        {
+            foreach(Assembly assembly in assemblys)
+            {
+                Type subclass = GetSingleSubclass<T>(assembly);
+                if(subclass != null)
+                {
+                    return subclass;
+                }
+            }
+
+            return null;
+        }
+
         public static Type GetSingleSubclass<T>(Type[] types)
         {
             Type[] subclassTypes = GetSubclass<T>(types);

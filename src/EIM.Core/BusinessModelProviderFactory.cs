@@ -6,18 +6,32 @@ using System.Text;
 using EIM.Business;
 using EIM.Core;
 using EIM.Data;
+using System.Reflection;
 
 namespace EIM.Core
 {
     public class BusinessModelProviderFactory
     {
-        public BusinessModelProviderFactory(CacheContainer cacheContainer, DataModelProviderFactory dataProviderFactory)
+        public BusinessModelProviderFactory(CacheContainer cacheContainer, DataModelProviderFactory dataProviderFactory, params Assembly[] assemblys)
         {
             this.DataModelProviderFactory = dataProviderFactory;
             this.CacheContainer = cacheContainer;
             this.DataModelMapperFactory = new DataModelMapperFactory(this.CacheContainer);
             this.DataProviders = new List<IBusinessModelProvider>();
-            this.DataProviderTypes = ReflectionHelper.GetSubclass<IBusinessModelProvider>(this.GetType().Assembly);
+
+            Assembly[] subAssemblys;
+            if (assemblys != null)
+            {
+                subAssemblys = new Assembly[assemblys.Length + 1];
+                Array.Copy(assemblys, subAssemblys, assemblys.Length);
+            }
+            else
+            {
+                subAssemblys = new Assembly[1];
+            }
+            subAssemblys[subAssemblys.Length - 1] = typeof(BusinessModelProviderFactory).Assembly;
+
+            this.DataProviderTypes = ReflectionHelper.GetSubclass<IBusinessModelProvider>(subAssemblys);
         }
 
         public DataModelProviderFactory DataModelProviderFactory { private set; get; }
@@ -30,13 +44,13 @@ namespace EIM.Core
 
         public Type[] DataProviderTypes { set; get; }
 
-        public virtual BusinessModelProvider<BusinessType, ModelType> CreateDataProvider<BusinessType, ModelType>() 
+        public virtual BusinessModelProvider<BusinessType, ModelType> CreateProvider<BusinessType, ModelType>() 
             where BusinessType : IKeyProvider
             where ModelType : class, IKeyProvider
         {
             DataModelProvider<ModelType> dataModelProvider = this.DataModelProviderFactory.CreateDataProviderByModelType<ModelType>();
 
-            BusinessModelProvider<BusinessType, ModelType> dataProvider = this.CreateDataProvider<BusinessType, ModelType>(dataModelProvider);
+            BusinessModelProvider<BusinessType, ModelType> dataProvider = this.CreateProvider<BusinessType, ModelType>(dataModelProvider);
             if(dataProvider == null)
             {
                 dataProvider = new BusinessModelProvider<BusinessType, ModelType>(this.DataModelMapperFactory, dataModelProvider);
@@ -45,7 +59,7 @@ namespace EIM.Core
             return dataProvider;
         }
 
-        public virtual BusinessModelProvider<BusinessType, ModelType> CreateDataProvider<BusinessType, ModelType>(DataModelProvider<ModelType> dataModelProvider)
+        public virtual BusinessModelProvider<BusinessType, ModelType> CreateProvider<BusinessType, ModelType>(DataModelProvider<ModelType> dataModelProvider)
             where BusinessType : IKeyProvider
             where ModelType : class, IKeyProvider
         {

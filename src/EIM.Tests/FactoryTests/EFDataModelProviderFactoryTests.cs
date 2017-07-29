@@ -15,7 +15,7 @@ namespace EIM.Tests.FactoryTests
         [Test]
         public void CreateDataProviderByModelType()
         {
-            TestEFDataModelProviderFactory factroy = new TestEFDataModelProviderFactory(this.GetType().Assembly);
+            TestEFDataModelProviderFactory factroy = new TestEFDataModelProviderFactory();
 
             DataModelProvider<TestDataModel> testModelProvider = factroy.CreateDataProviderByModelType<TestDataModel>();
             Assert.IsNotNull(testModelProvider);

@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FactoryTests\BusinessModelMapperFactoryTests.cs" />
+    <Compile Include="FactoryTests\BusinessModelProviderFactoryTests.cs" />
+    <Compile Include="FactoryTests\DataModelMapperFactoryTests.cs" />
     <Compile Include="TestDataModel.cs" />
     <Compile Include="TestEIMDbContext.cs" />
     <Compile Include="FactoryTests\EFDataModelProviderFactoryTests.cs" />
