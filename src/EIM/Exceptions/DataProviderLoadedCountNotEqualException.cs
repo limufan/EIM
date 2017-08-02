@@ -12,7 +12,7 @@ namespace EIM.Exceptions
     {
         public DataProviderLoadedCountNotEqualException(int databaseCount, int memoryCount)
         {
-            this.EIMExceptionMessage = string.Format("内存和数据库数目不相等, 数据库：{0}, 内存: {1}", databaseCount, memoryCount);
+            this.ExceptionMessage = string.Format("内存和数据库数目不相等, 数据库：{0}, 内存: {1}", databaseCount, memoryCount);
         }
 
 

@@ -8,33 +8,33 @@ namespace EIM.Exceptions
     {
         public EIMException()
         {
-            this.EIMExceptionMessage = "操作异常!";
+            this.ExceptionMessage = "操作异常!";
         }
 
         public EIMException(string message)
         {
-            this.EIMExceptionMessage = message;
+            this.ExceptionMessage = message;
         }
 
         public EIMException(SerializationInfo info, StreamingContext context)
             :base(info, context)
         {
-            this.EIMExceptionMessage = info.GetString("EIMExceptionMessage");
+            this.ExceptionMessage = info.GetString("EIMExceptionMessage");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue("EIMExceptionMessage", this.EIMExceptionMessage);
+            info.AddValue("EIMExceptionMessage", this.ExceptionMessage);
         }
 
-        protected string EIMExceptionMessage { set; get; }
+        protected string ExceptionMessage { set; get; }
 
         public override string Message
         {
             get
             {
-                return this.EIMExceptionMessage;
+                return this.ExceptionMessage;
             }
         }
     }

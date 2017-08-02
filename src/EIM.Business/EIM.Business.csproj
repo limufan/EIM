@@ -75,6 +75,10 @@
     <Compile Include="ICache.cs" />
     <Compile Include="CacheManagers\ICacheManager.cs" />
     <Compile Include="ObjectFilter.cs" />
+    <Compile Include="Org\Department.cs" />
+    <Compile Include="Org\DepartmentInfo.cs" />
+    <Compile Include="Org\Position.cs" />
+    <Compile Include="Org\PositionInfo.cs" />
     <Compile Include="Org\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Org\User.cs" />

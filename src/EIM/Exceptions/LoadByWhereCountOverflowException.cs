@@ -12,7 +12,7 @@ namespace EIM.Exceptions
     {
         public LoadByWhereCountOverflowException(long count, string where)
         {
-            this.EIMExceptionMessage = string.Format("加载数据太多，加载数据：{0}，加载条件:{1}", count, where);
+            this.ExceptionMessage = string.Format("加载数据太多，加载数据：{0}，加载条件:{1}", count, where);
         }
 
 

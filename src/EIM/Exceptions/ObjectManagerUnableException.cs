@@ -12,7 +12,7 @@ namespace EIM.Exceptions
     {
         public ObjectManagerUnableException(string status)
         {
-            this.EIMExceptionMessage = "对象状态异常:" + status.ToString() + ",稍后访问......";
+            this.ExceptionMessage = "对象状态异常:" + status.ToString() + ",稍后访问......";
         }
 
 

@@ -12,7 +12,7 @@ namespace EIM.Exceptions
     {
         public LoadByWhereContainsSqlKeywordflowException(string where)
         {
-            this.EIMExceptionMessage = string.Format("where 条件中包含了特殊关键字:{0}", where);
+            this.ExceptionMessage = string.Format("where 条件中包含了特殊关键字:{0}", where);
         }
 
 

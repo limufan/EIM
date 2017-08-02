@@ -8,7 +8,7 @@ namespace EIM.Exceptions
     {
         public ValidateException(string message)
         {
-            this.EIMExceptionMessage = message;
+            this.ExceptionMessage = message;
         }
 
 
