@@ -52,28 +52,10 @@
     <Compile Include="EIMLog.cs" />
     <Compile Include="ConfigurationManagerHelper.cs" />
     <Compile Include="ConsoleHelper.cs" />
-    <Compile Include="Consts\GongdanConst.cs" />
-    <Compile Include="Consts\MenuCodeConst.cs" />
-    <Compile Include="Consts\XiaoxiLeibieConst.cs" />
     <Compile Include="DateRange.cs" />
     <Compile Include="DateTimeHelper.cs" />
     <Compile Include="DateTimeRange.cs" />
     <Compile Include="EnumHelper.cs" />
-    <Compile Include="Enums\AcceptStatus.cs" />
-    <Compile Include="Enums\DelType.cs" />
-    <Compile Include="Enums\FuwudanQuanxian.cs" />
-    <Compile Include="Enums\FuwudanZhuangtai.cs" />
-    <Compile Include="Enums\GongdanZhuangtai.cs" />
-    <Compile Include="Enums\HuifangZhuangtai.cs" />
-    <Compile Include="Enums\HuifuZhuangtai.cs" />
-    <Compile Include="Enums\JiesuandanStatus.cs" />
-    <Compile Include="Enums\JiesuanType.cs" />
-    <Compile Include="Enums\OrgType.cs" />
-    <Compile Include="Enums\PeijianHexiaodanMingxiZhuangtai.cs" />
-    <Compile Include="Enums\PeijianHexiaodanZhuangtai.cs" />
-    <Compile Include="Enums\PeijianLeixing.cs" />
-    <Compile Include="Enums\XiaoxiDengji.cs" />
-    <Compile Include="Enums\XiaoxiZhuangtai.cs" />
     <Compile Include="Exceptions\EIMException.cs" />
     <Compile Include="Exceptions\DataProviderLoadedCountNotEqualException.cs" />
     <Compile Include="Exceptions\LoadByWhereContainsSqlKeywordflowException.cs" />
@@ -81,7 +63,6 @@
     <Compile Include="Exceptions\ObjectFilterSoftException.cs" />
     <Compile Include="Exceptions\ObjectManagerUnableException.cs" />
     <Compile Include="Exceptions\ValidateException.cs" />
-    <Compile Include="IKeyProvider.cs" />
     <Compile Include="IOrderable.cs" />
     <Compile Include="IPropertyComparable.cs" />
     <Compile Include="IStringResouceProvider.cs" />
@@ -183,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Consts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

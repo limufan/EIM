@@ -1,5 +1,6 @@
 ﻿using EIM.Business;
 using EIM.Business.Org;
+using EIM.Cache;
 using EIM.Core;
 using EIM.Data.Org;
 using NUnit.Framework;

@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EIM.Business;
 using Newtonsoft.Json;
-using EIM.Business.CacheManagers;
+using EIM.Cache.CacheManagers;
 
 namespace EIM.Core
 {
@@ -27,8 +27,8 @@ namespace EIM.Core
             where ModelType : class, IKeyProvider
     {
 
-        public DatabaseCacheProvider(BusinessModelProviderFactory businessModelProviderFactory, params ICacheManager[] dependentManagers)
-            : base(businessModelProviderFactory.CacheContainer, dependentManagers)
+        public DatabaseCacheProvider(DataManager dataManager, params ICacheManager[] dependentManagers)
+            : base(dataManager.CacheContainer, dependentManagers)
         {
 #if DEBUG
             this.MaxCount = ConfigurationManagerHelper.GetIntValue("DataLoadMaxCount");
@@ -37,8 +37,9 @@ namespace EIM.Core
                 this.MaxCount = int.MaxValue;
             }
 #endif
-            this.BusinessModelProviderFactory = businessModelProviderFactory;
-            this.CacheMapper = businessModelProviderFactory.DataModelMapperFactory.CreateMapper<BusinessType, ModelType>();
+            this.DataManager = dataManager;
+            this.DataModelProviderFactory = this.DataManager.DataModelProviderFactory;
+            this.CacheMapper = dataManager.DataModelMapperFactory.CreateMapper<BusinessType, ModelType>();
             this.UnloadIdList = new ReaderWriterLockedList<object>();
         }
 
@@ -49,15 +50,17 @@ namespace EIM.Core
 
         public ReaderWriterLockedList<object> UnloadIdList { private set; get; }
 
-        public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
+        public DataManager DataManager { set; get; }
 
         public DataModelMapper<BusinessType, ModelType> CacheMapper { set; get; }
 
+        public DataModelProviderFactory DataModelProviderFactory { set; get; }
+
         public bool DisableCheckLogger { set; get; }
 
-        protected virtual BusinessModelProvider<BusinessType, ModelType> CreateDataProvider()
+        protected virtual DataModelProvider<ModelType> CreateDataProvider()
         {
-            return this.BusinessModelProviderFactory.CreateProvider<BusinessType, ModelType>();
+            return this.DataModelProviderFactory.CreateDataProvider<ModelType>();
         }
 
         protected override void OnLoaded()
@@ -97,9 +100,9 @@ namespace EIM.Core
 
         public virtual IList<ModelType> GetModels()
         {
-            using (BusinessModelProvider<BusinessType, ModelType> dataProvider = this.CreateDataProvider())
+            using (DataModelProvider<ModelType> dataProvider = this.CreateDataProvider())
             {
-                return dataProvider.DataProvider.GetModels();
+                return dataProvider.GetModels();
             }
         }
 

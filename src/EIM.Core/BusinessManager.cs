@@ -1,5 +1,5 @@
 ﻿using EIM.Business;
-using EIM.Business.CacheManagers;
+using EIM.Cache.CacheManagers;
 using EIM.Core.BusinessModelManagers;
 using EIM.Data;
 using System;
@@ -13,17 +13,11 @@ namespace EIM.Core
     public class BusinessManager
     {
         public BusinessManager()
-            : this(new EFDataModelProviderFactory())
         {
-            
-        }
-
-        public BusinessManager(DataModelProviderFactory dataModelProviderFactory)
-        {
-            this.CacheContainer = new CacheContainer();
-            this.DataModelProviderFactory = dataModelProviderFactory;
-            this.BusinessModelProviderFactory = new BusinessModelProviderFactory(this.CacheContainer, dataModelProviderFactory);
-            this.CacheProviderManager = new CacheProviderManager(this.BusinessModelProviderFactory);
+            this.CacheContainer = new EIMCacheContainer();
+            this.DataManager = new DataManager(this.CacheContainer);
+            this.DataModelProviderFactory = this.DataManager.DataModelProviderFactory;
+            this.CacheProviderManager = new EIMCacheProviderManager(this.DataManager);
 
             this.UserManager = new UserManager(this);
 
@@ -31,7 +25,9 @@ namespace EIM.Core
             this.BusinessModelMapperFactory = new BusinessModelMapperFactory(this.CacheContainer);
         }
 
-        public CacheContainer CacheContainer { set; get; }
+        public EIMCacheContainer CacheContainer { set; get; }
+
+        public DataManager DataManager { set; get; }
 
         public DataModelMapperFactory DataModelMapperFactory { set; get; }
 
@@ -39,9 +35,7 @@ namespace EIM.Core
 
         public DataModelProviderFactory DataModelProviderFactory { set; get; }
 
-        public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
-
-        public CacheProviderManager CacheProviderManager { set; get; }
+        public EIMCacheProviderManager CacheProviderManager { set; get; }
 
         public UserManager UserManager { set; get; }
     }

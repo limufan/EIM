@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using EIM.Business;
+using EIM.Cache;
 
 namespace EIM.Data
 {
@@ -13,7 +14,7 @@ namespace EIM.Data
 
     }
 
-    public class DataModelMapper<MappedType, ModelType> : IDataModelMapper
+    public class DataModelMapper<TargetType, SourceType> : IDataModelMapper
     {
         public DataModelMapper(CacheContainer cacheContainer)
         {
@@ -22,13 +23,13 @@ namespace EIM.Data
 
         public BusinessModelMapper BusinessModelMapper { set; get; }
 
-        public virtual MappedType Map(ModelType model)
+        public virtual TargetType Map(SourceType model)
         {
             if (model == null)
             {
-                return default(MappedType);
+                return default(TargetType);
             }
-            ConstructorInfo cotr = ReflectionHelper.GetConstructor(typeof(MappedType));
+            ConstructorInfo cotr = ReflectionHelper.GetConstructor(typeof(TargetType));
             ParameterInfo[] cotrParams = cotr.GetParameters();
             if (cotrParams.Length > 1)
             {
@@ -36,72 +37,21 @@ namespace EIM.Data
             }
             else if (cotrParams.Length == 1)
             {
-                object infoArgs = Activator.CreateInstance(cotrParams[0].ParameterType);
-                this.Map(infoArgs, model);
-                MappedType obj = this.BusinessModelMapper.Map<MappedType>(infoArgs);
+                object infoArgs = this.BusinessModelMapper.Map(model, cotrParams[0].ParameterType);
+
+                TargetType obj = this.BusinessModelMapper.Map<TargetType>(infoArgs);
                 return obj;
             }
             else
             {
-                MappedType obj = this.BusinessModelMapper.Map<MappedType>(model);
+                TargetType obj = this.BusinessModelMapper.Map<TargetType>(model);
                 return obj;
             }
         }
 
-        /// <summary>
-        /// 将model映射成Info
-        /// </summary>
-        /// <typeparam name="InfoType"></typeparam>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public virtual InfoType Map<InfoType>(ModelType model)
+        public void Map(TargetType target, SourceType source)
         {
-            if (model == null)
-            {
-                return default(InfoType);
-            }
-
-            InfoType info = Activator.CreateInstance<InfoType>();
-            this.Map(info, model);
-
-            return info;
-        }
-
-        /// <summary>
-        /// 将model的字段映射到info上
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="model"></param>
-        public virtual void Map(object info, ModelType model)
-        {
-            this.BusinessModelMapper.Map(info, model);
-        }
-
-        /// <summary>
-        /// 将info映射成model
-        /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        public virtual ModelType Map(object info)
-        {
-            if (info == null)
-            {
-                return default(ModelType);
-            }
-            ModelType model = Activator.CreateInstance<ModelType>();
-            this.Map(model, info);
-
-            return model;
-        }
-
-        /// <summary>
-        /// 将info的字段映射到model上
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="info"></param>
-        public virtual void Map(ModelType model, object info)
-        {
-            this.BusinessModelMapper.Map(model, info);
+            this.BusinessModelMapper.Map(target, source);
         }
     }
 

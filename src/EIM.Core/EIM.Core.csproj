@@ -48,17 +48,18 @@
   <ItemGroup>
     <Compile Include="BusinessManager.cs" />
     <Compile Include="BusinessModelManagers\UserManager.cs" />
-    <Compile Include="BusinessModelProvider.cs" />
-    <Compile Include="BusinessModelProviderFactory.cs" />
-    <Compile Include="CacheProviders\CacheProvider.cs" />
-    <Compile Include="CacheProviders\CacheProviderManager.cs" />
-    <Compile Include="CacheProviders\DatabaseCacheProvider.cs" />
+    <Compile Include="DatabaseCacheProvider.cs" />
+    <Compile Include="EIMCacheProviderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EIM.Business\EIM.Business.csproj">
       <Project>{9be61205-7157-4e41-a36d-2af28654ab32}</Project>
       <Name>EIM.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIM.Cache\EIM.Cache.csproj">
+      <Project>{0f6b44f4-d579-49cf-9ab7-449c5250891d}</Project>
+      <Name>EIM.Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\EIM.Data\EIM.Data.csproj">
       <Project>{e9729f6f-84fd-4ae7-b000-677e94a0cf44}</Project>

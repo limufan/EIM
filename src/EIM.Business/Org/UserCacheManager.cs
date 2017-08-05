@@ -1,12 +1,13 @@
-﻿using EIM.Business.CacheIndexes;
-using EIM.Business.Org;
+﻿using EIM.Business.Org;
+using EIM.Cache.CacheIndexes;
+using EIM.Cache.CacheManagers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Business.CacheManagers
+namespace EIM.Business.Org
 {
     public class UserCacheManager : ByIdCodeGuidCacheManager<User>
     {

@@ -17,34 +17,34 @@ namespace EIM.Core.BusinessModelManagers
         {
             this.BusinessManager = businessManager;
             this.CacheContainer = businessManager.CacheContainer;
-            this.BusinessModelProviderFactory = businessManager.BusinessModelProviderFactory;
         }
 
         public BusinessManager BusinessManager { set; get; }
 
-        public BusinessModelProviderFactory BusinessModelProviderFactory { set; get; }
+        public DataModelProviderFactory DataModelProviderFactory { set; get; }
 
-        public CacheContainer CacheContainer { set; get; }
+        public EIMCacheContainer CacheContainer { set; get; }
 
         public event TEventHandler<UserCreateInfo> Creating;
         public event TEventHandler<User> Created;
         public virtual event TEventHandler<User, UserChangeInfo> Changing;
         public event TEventHandler<User, UserChangeInfo> Changed;
-        public event TEventHandler<User> Deleted;
-        public virtual event TEventHandler<User, UserChangeInfo> Logoffed;
-        public virtual event TEventHandler<User, UserChangeInfo> Locked;
-        public virtual event TEventHandler<User, UserChangeInfo> Activated;
-        public virtual event TEventHandler<User, UserChangeInfo> PasswordReseted;
+        public event TEventHandler<User, OperationInfo> Deleted;
+        public virtual event TEventHandler<User, OperationInfo> Logoffed;
+        public virtual event TEventHandler<User, OperationInfo> Locked;
+        public virtual event TEventHandler<User, OperationInfo> Activated;
+        public virtual event TEventHandler<User, OperationInfo> PasswordReseted;
 
         public User Create(UserCreateInfo createInfo)
         {
             this.OnCreating(createInfo);
 
-            using (BusinessModelProvider<User, UserDataModel> businessModelProvider = 
-                this.BusinessModelProviderFactory.CreateProvider<User, UserDataModel>())
+            using (DataModelProvider<UserDataModel> dataModelProvider = this.DataModelProviderFactory.CreateDataProvider<UserDataModel>())
             {
-                User user = businessModelProvider.Create(createInfo);
+                UserDataModel model = this.BusinessManager.DataModelMapperFactory.Map<UserDataModel, UserCreateInfo>(createInfo);
+                dataModelProvider.Insert(model);
 
+                User user = this.BusinessManager.DataModelMapperFactory.Map<User, UserDataModel>(model);
                 this.OnCreated(user);
 
                 return user;
@@ -55,23 +55,24 @@ namespace EIM.Core.BusinessModelManagers
         {
             this.OnChanging(changeInfo);
 
-            using (BusinessModelProvider<User, UserDataModel> businessModelProvider =
-                this.BusinessModelProviderFactory.CreateProvider<User, UserDataModel>())
+            using (DataModelProvider<UserDataModel> dataModelProvider = this.DataModelProviderFactory.CreateDataProvider<UserDataModel>())
             {
-                businessModelProvider.Change(changeInfo);
+                UserDataModel model = dataModelProvider.SelectById(changeInfo.ChangeUser.Id);
+                this.BusinessManager.DataModelMapperFactory.Map<UserDataModel, UserChangeInfo>(model, changeInfo);
+                dataModelProvider.Update(model);
 
                 this.OnChanged(changeInfo);
             }
         }
 
-        public void Delete(User user)
+        public void Delete(User user, OperationInfo opInfo)
         {
-            using (BusinessModelProvider<User, UserDataModel> businessModelProvider =
-                this.BusinessModelProviderFactory.CreateProvider<User, UserDataModel>())
+            using (DataModelProvider<UserDataModel> dataModelProvider = this.DataModelProviderFactory.CreateDataProvider<UserDataModel>())
             {
-                businessModelProvider.Delete(user);
+                UserDataModel model = dataModelProvider.SelectById(user.Id);
+                dataModelProvider.Update(model);
 
-                this.OnDeleted(user);
+                this.OnDeleted(user, opInfo);
             }
         }
 
@@ -89,26 +90,29 @@ namespace EIM.Core.BusinessModelManagers
             this.Change(changeInfo);
         }
 
-        public virtual void ResetPassword(User importUser, string newPassword, User opUser)
+        public virtual void ResetPassword(User user, string newPassword, OperationInfo opInfo)
         {
             string encodedNewPassword = Cryptography.MD5Encode(newPassword);
-            this.ImportPassword(importUser, encodedNewPassword, opUser);
-        }
-
-        public virtual void ImportPassword(User importUser, string password, User operationUser)
-        {
-            UserChangeInfo changeInfo = new UserChangeInfo(importUser);
-            changeInfo.Password = password;
+            UserChangeInfo changeInfo = new UserChangeInfo(user);
+            changeInfo.Password = encodedNewPassword;
 
             this.Change(changeInfo);
 
             if (this.PasswordReseted != null)
             {
-                this.PasswordReseted(importUser, changeInfo);
+                this.PasswordReseted(user, opInfo);
             }
         }
 
-        public virtual void Lock(User lockUser, User operationUser)
+        public virtual void ImportPassword(string password, User user, OperationInfo opInfo)
+        {
+            UserChangeInfo changeInfo = new UserChangeInfo(user);
+            changeInfo.Password = password;
+
+            this.Change(changeInfo);
+        }
+
+        public virtual void Lock(User lockUser, OperationInfo opInfo)
         {
             UserStatus status = UserStatus.Lock;
             UserChangeInfo changeInfo = new UserChangeInfo(lockUser);
@@ -118,11 +122,11 @@ namespace EIM.Core.BusinessModelManagers
 
             if (this.Locked != null)
             {
-                this.Locked(lockUser, changeInfo);
+                this.Locked(lockUser, opInfo);
             }
         }
 
-        public virtual void Unlock(User unlockUser, User operationUser)
+        public virtual void Unlock(User unlockUser, OperationInfo opInfo)
         {
             UserStatus status = UserStatus.Normal;
             UserChangeInfo changeInfo = new UserChangeInfo(unlockUser);
@@ -133,11 +137,11 @@ namespace EIM.Core.BusinessModelManagers
             if (this.Activated != null)
             {
 
-                this.Activated(unlockUser, changeInfo);
+                this.Activated(unlockUser, opInfo);
             }
         }
 
-        public virtual void Logoff(User logoffUser, User operationUser)
+        public virtual void Logoff(User logoffUser, OperationInfo opInfo)
         {
             UserStatus status = UserStatus.Logoff;
             UserChangeInfo changeInfo = new UserChangeInfo(logoffUser);
@@ -147,11 +151,11 @@ namespace EIM.Core.BusinessModelManagers
 
             if (this.Logoffed != null)
             {
-                this.Logoffed(logoffUser, changeInfo);
+                this.Logoffed(logoffUser, opInfo);
             }
         }
 
-        public virtual void Activate(User activateUser, User operationUser)
+        public virtual void Activate(User activateUser, OperationInfo opInfo)
         {
             UserStatus status = UserStatus.Normal;
             UserChangeInfo changeInfo = new UserChangeInfo(activateUser);
@@ -161,7 +165,7 @@ namespace EIM.Core.BusinessModelManagers
 
             if (this.Activated != null)
             {
-                this.Activated(activateUser, changeInfo);
+                this.Activated(activateUser, opInfo);
             }
         }
 
@@ -199,12 +203,12 @@ namespace EIM.Core.BusinessModelManagers
             }
         }
 
-        public void OnDeleted(User user)
+        public void OnDeleted(User user, OperationInfo opInfo)
         {
             this.CacheContainer.UserCacheManager.Remove(user);
             if(this.Deleted != null)
             {
-                this.Deleted(user);
+                this.Deleted(user, opInfo);
             }
         }
 

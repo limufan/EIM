@@ -48,42 +48,23 @@
   <ItemGroup>
     <Compile Include="BusinessModelMapper.cs" />
     <Compile Include="BusinessModelMapperFactory.cs" />
-    <Compile Include="CacheContainer.cs" />
-    <Compile Include="CacheCounter.cs" />
-    <Compile Include="CacheIndexes\ByLongCodeCacheIndex.cs" />
-    <Compile Include="CacheIndexes\ByNameCacheIndex.cs" />
-    <Compile Include="CacheIndexes\ByCodeCacheIndex.cs" />
-    <Compile Include="CacheIndexes\ByGuidCacheIndex.cs" />
-    <Compile Include="CacheIndexes\KeyFuncCacheIndex.cs" />
-    <Compile Include="CacheIndexes\DicationaryCacheIndex.cs" />
-    <Compile Include="CacheIndexes\ByIdCacheIndex.cs" />
-    <Compile Include="CacheIndexes\CacheIndex.cs" />
-    <Compile Include="CacheManagers\ByIdCodeGuidCacheManager.cs" />
-    <Compile Include="CacheManagers\CacheManager.cs" />
-    <Compile Include="CacheManagers\ByCodeCacheManager.cs" />
-    <Compile Include="CacheManagers\ByGuidCacheManager.cs" />
-    <Compile Include="CacheManagers\ByGuidCodeCacheManager.cs" />
-    <Compile Include="CacheManagers\ByIdCacheManager.cs" />
-    <Compile Include="CacheManagers\ByIdCodeCacheManager.cs" />
-    <Compile Include="CacheManagers\ByIdCodeLongCodeCacheManager.cs" />
-    <Compile Include="CacheManagers\ByIdCodeLongCodeNameCacheManager.cs" />
-    <Compile Include="CacheManagers\ByIdCodeNameCacheManager.cs" />
-    <Compile Include="CacheManagers\ByIdGuidCacheManager.cs" />
-    <Compile Include="CacheManagers\DelayCacheManager.cs" />
-    <Compile Include="CacheManagers\UserCacheManager.cs" />
+    <Compile Include="EIMCacheContainer.cs" />
     <Compile Include="IChangeInfo.cs" />
-    <Compile Include="ICache.cs" />
-    <Compile Include="CacheManagers\ICacheManager.cs" />
-    <Compile Include="ObjectFilter.cs" />
+    <Compile Include="OperationInfo.cs" />
     <Compile Include="Org\Department.cs" />
     <Compile Include="Org\DepartmentInfo.cs" />
     <Compile Include="Org\Position.cs" />
     <Compile Include="Org\PositionInfo.cs" />
+    <Compile Include="Org\UserCacheManager.cs" />
     <Compile Include="Org\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Org\User.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EIM.Cache\EIM.Cache.csproj">
+      <Project>{0f6b44f4-d579-49cf-9ab7-449c5250891d}</Project>
+      <Name>EIM.Cache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EIM\EIM.csproj">
       <Project>{688205cb-09f5-44ca-b36a-bb38692d4695}</Project>
       <Name>EIM</Name>

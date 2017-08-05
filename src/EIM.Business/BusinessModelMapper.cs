@@ -1,5 +1,6 @@
 ﻿using EIM.Business;
-using EIM.Business.CacheManagers;
+using EIM.Cache.CacheManagers;
+using EIM.Cache;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -17,11 +17,11 @@ namespace EIM.Tests.FactoryTests
         {
             TestEFDataModelProviderFactory factroy = new TestEFDataModelProviderFactory();
 
-            DataModelProvider<TestDataModel> testModelProvider = factroy.CreateDataProviderByModelType<TestDataModel>();
+            DataModelProvider<TestDataModel> testModelProvider = factroy.CreateDataProvider<TestDataModel>();
             Assert.IsNotNull(testModelProvider);
             Assert.True(testModelProvider is TestDataModelProvider);
 
-            DataModelProvider<TestDataModel_1> testModel_1Provider = factroy.CreateDataProviderByModelType<TestDataModel_1>();
+            DataModelProvider<TestDataModel_1> testModel_1Provider = factroy.CreateDataProvider<TestDataModel_1>();
             Assert.IsNotNull(testModel_1Provider);
             Assert.True(testModel_1Provider is EFDataModelProvider<TestDataModel_1>);
         }

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EIM.Website", "EIM.Website\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EIM.Tests", "EIM.Tests\EIM.Tests.csproj", "{06DD13C0-F9D2-4F54-927E-B4036BC006B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EIM.Cache", "EIM.Cache\EIM.Cache.csproj", "{0F6B44F4-D579-49CF-9AB7-449C5250891D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{06DD13C0-F9D2-4F54-927E-B4036BC006B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06DD13C0-F9D2-4F54-927E-B4036BC006B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06DD13C0-F9D2-4F54-927E-B4036BC006B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F6B44F4-D579-49CF-9AB7-449C5250891D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F6B44F4-D579-49CF-9AB7-449C5250891D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F6B44F4-D579-49CF-9AB7-449C5250891D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F6B44F4-D579-49CF-9AB7-449C5250891D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

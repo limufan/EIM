@@ -1,4 +1,5 @@
 ﻿using EIM.Business;
+using EIM.Cache;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,18 +31,18 @@ namespace EIM.Data
 
         public Assembly[] Assemblys { set; get; }
 
-        public DataModelMapper<MappedType, ModelType> CreateMapper<MappedType, ModelType>()
+        public DataModelMapper<ResultType, SourceType> CreateMapper<ResultType, SourceType>()
         {
-            DataModelMapper<MappedType, ModelType> mapper = null;
+            DataModelMapper<ResultType, SourceType> mapper = null;
 
-            Type mapperType = ReflectionHelper.GetSingleSubclass<DataModelMapper<MappedType, ModelType>>(this.Assemblys);
+            Type mapperType = ReflectionHelper.GetSingleSubclass<DataModelMapper<ResultType, SourceType>>(this.Assemblys);
             if (mapperType == null)
             {
-                mapper = new DataModelMapper<MappedType, ModelType>(this.CacheContainer);
+                mapper = new DataModelMapper<ResultType, SourceType>(this.CacheContainer);
             }
             else
             {
-                mapper = Activator.CreateInstance(mapperType, this.CacheContainer) as DataModelMapper<MappedType, ModelType>;
+                mapper = Activator.CreateInstance(mapperType, this.CacheContainer) as DataModelMapper<ResultType, SourceType>;
             }
 
             if (mapper == null)
@@ -50,6 +51,20 @@ namespace EIM.Data
             }
 
             return mapper;
+        }
+
+        public TargetType Map<TargetType, SourceType>(SourceType source)
+        {
+            DataModelMapper<TargetType, SourceType> mapper = this.CreateMapper<TargetType, SourceType>();
+
+            return mapper.Map(source);
+        }
+
+        public void Map<TargetType, SourceType>(TargetType target, SourceType source)
+        {
+            DataModelMapper<TargetType, SourceType> mapper = this.CreateMapper<TargetType, SourceType>();
+
+            mapper.Map(target, source);
         }
 
     }

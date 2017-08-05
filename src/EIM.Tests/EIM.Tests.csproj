@@ -54,12 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FactoryTests\BusinessModelMapperFactoryTests.cs" />
-    <Compile Include="FactoryTests\BusinessModelProviderFactoryTests.cs" />
     <Compile Include="FactoryTests\DataModelMapperFactoryTests.cs" />
     <Compile Include="TestDataModel.cs" />
     <Compile Include="TestEIMDbContext.cs" />
     <Compile Include="FactoryTests\EFDataModelProviderFactoryTests.cs" />
-    <Compile Include="Temp\BusinessModelProviderTests.cs" />
     <Compile Include="Temp\EFDataModelProviderTests.cs" />
     <Compile Include="ObjectEqualAsserter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +74,10 @@
     <ProjectReference Include="..\EIM.Business\EIM.Business.csproj">
       <Project>{9be61205-7157-4e41-a36d-2af28654ab32}</Project>
       <Name>EIM.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIM.Cache\EIM.Cache.csproj">
+      <Project>{0f6b44f4-d579-49cf-9ab7-449c5250891d}</Project>
+      <Name>EIM.Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\EIM.Core\EIM.Core.csproj">
       <Project>{ceac9f8e-f914-4aa8-9343-d446d971f56a}</Project>

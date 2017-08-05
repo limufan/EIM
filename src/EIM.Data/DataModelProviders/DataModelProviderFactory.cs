@@ -27,11 +27,11 @@ namespace EIM.Data
 
         public Type[] DataProviderTypes { set; get; }
 
-        public abstract T CreateDataProvider<T>() where T : IDataModelProvider;
+        public abstract T CreateDataProviderByType<T>() where T : IDataModelProvider;
 
-        public abstract object CreateDataProvider(Type type);
+        public abstract object CreateDataProviderByType(Type type);
 
-        public virtual DataModelProvider<ModelType> CreateDataProviderByModelType<ModelType>() where ModelType : class
+        public virtual DataModelProvider<ModelType> CreateDataProvider<ModelType>() where ModelType : class
         {
             DataModelProvider<ModelType> dataProvider = this.CreateSubclassDataProvider<DataModelProvider<ModelType>>();
 
@@ -46,7 +46,7 @@ namespace EIM.Data
                 return null;
             }
 
-            T dataProvider = this.CreateDataProvider(dataProviderType) as T;
+            T dataProvider = this.CreateDataProviderByType(dataProviderType) as T;
 
             if (dataProvider == null)
             {
