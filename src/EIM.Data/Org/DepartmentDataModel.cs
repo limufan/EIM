@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EIM.Data.Org
 {
     [Table("org_department")]
-    public class DepartmentDataModel : IKeyProvider
+    public class DepartmentDataModel
     {
         public int Id { set; get; }
 
@@ -19,10 +19,5 @@ namespace EIM.Data.Org
 
         [MaxLength(50)]
         public string Code { set; get; }
-
-        public object GetKey()
-        {
-            return this.Id;
-        }
     }
 }

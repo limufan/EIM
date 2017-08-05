@@ -6,20 +6,14 @@ using System.Threading.Tasks;
 
 namespace EIM.Tests
 {
-    public class TestDataModel : IKeyProvider
+    public class TestDataModel
     {
-        public object GetKey()
-        {
-            return Guid.NewGuid().ToString();
-        }
+        
     }
 
-    public class TestBusinessModel : IKeyProvider
+    public class TestBusinessModel
     {
-        public object GetKey()
-        {
-            return Guid.NewGuid().ToString();
-        }
+        
     }
 
     public class TestDataModel_1

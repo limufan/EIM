@@ -11,9 +11,9 @@ namespace EIM.Tests
 {
     public class ObjectEqualAsserter : ObjectComparer
     {
-        public void AssertEqual(object obj1, object obj2)
+        public void AssertEqual(object expected, object actual)
         {
-            Assert.AreEqual(true, this.Compare(obj1, obj2, 1));
+            Assert.AreEqual(true, this.Compare(expected, actual, 1));
         }
     }
 }

@@ -17,6 +17,7 @@ namespace EIM.Core.BusinessModelManagers
         {
             this.BusinessManager = businessManager;
             this.CacheContainer = businessManager.CacheContainer;
+            this.DataModelProviderFactory = businessManager.DataModelProviderFactory;
         }
 
         public BusinessManager BusinessManager { set; get; }
@@ -38,17 +39,17 @@ namespace EIM.Core.BusinessModelManagers
         public User Create(UserCreateInfo createInfo)
         {
             this.OnCreating(createInfo);
+            UserDataModel model = this.BusinessManager.DataModelMapperFactory.Map<UserDataModel, UserCreateInfo>(createInfo);
 
             using (DataModelProvider<UserDataModel> dataModelProvider = this.DataModelProviderFactory.CreateDataProvider<UserDataModel>())
             {
-                UserDataModel model = this.BusinessManager.DataModelMapperFactory.Map<UserDataModel, UserCreateInfo>(createInfo);
                 dataModelProvider.Insert(model);
-
-                User user = this.BusinessManager.DataModelMapperFactory.Map<User, UserDataModel>(model);
-                this.OnCreated(user);
-
-                return user;
             }
+
+            User user = this.BusinessManager.DataModelMapperFactory.Map<User, UserDataModel>(model);
+            this.OnCreated(user);
+
+            return user;
         }
 
         public void Change(UserChangeInfo changeInfo)
@@ -212,6 +213,24 @@ namespace EIM.Core.BusinessModelManagers
             }
         }
 
+        public User GetById(int id)
+        {
+            return this.CacheContainer.UserCacheManager.GetById(id);
+        }
 
+        public User GetByCode(string code)
+        {
+            return this.CacheContainer.UserCacheManager.GetByCode(code);
+        }
+
+        public User GetByGuid(string guid)
+        {
+            return this.CacheContainer.UserCacheManager.GetByGuid(guid);
+        }
+
+        public User GetByAccount(string account)
+        {
+            return this.CacheContainer.UserCacheManager.GetByAccount(account);
+        }
     }
 }

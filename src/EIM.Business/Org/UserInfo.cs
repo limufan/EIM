@@ -67,7 +67,7 @@ namespace EIM.Business.Org
 
     }
 
-    public class UserChangeInfo : UserBaseInfo, IChangeInfo
+    public class UserChangeInfo : UserBaseInfo
     {
         public UserChangeInfo(User user)
         {
@@ -76,10 +76,5 @@ namespace EIM.Business.Org
         }
 
         public User ChangeUser { set; get; }
-
-        public object GetKey()
-        {
-            return this.ChangeUser.Id;
-        }
     }
 }

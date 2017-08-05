@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Business
+namespace EIM.Tests.CoreTests
 {
-    public interface IChangeInfo: IKeyProvider
+    public class CoreTestsBase: TestBase
     {
-        
     }
 }

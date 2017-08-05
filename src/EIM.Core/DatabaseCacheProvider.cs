@@ -23,8 +23,8 @@ namespace EIM.Core
     }
 
     public class DatabaseCacheProvider<BusinessType, ModelType> : CacheProvider<BusinessType>, IDatabaseCacheProvider
-            where BusinessType : class, IKeyProvider
-            where ModelType : class, IKeyProvider
+            where BusinessType : class
+            where ModelType : class
     {
 
         public DatabaseCacheProvider(DataManager dataManager, params ICacheManager[] dependentManagers)

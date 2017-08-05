@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EIM.Business.Org
 {
-    public class User : IIdCodeGuidProvider, IKeyProvider
+    public class User : IIdCodeGuidProvider
     {
         public User(UserInfo userInfo)
         {
@@ -83,11 +83,6 @@ namespace EIM.Business.Org
         protected virtual void SetInfo(UserBaseInfo info)
         {
             ObjectMapperHelper.Map(this, info);
-        }
-
-        public object GetKey()
-        {
-            return this.Id;
         }
     }
 }

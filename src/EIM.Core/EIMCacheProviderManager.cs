@@ -21,8 +21,8 @@ namespace EIM.Core
         public DataManager DataManager { private set; get; }
 
         protected virtual DatabaseCacheProvider<CacheType, ModelType> CreateCacheProvider<CacheType, ModelType>()
-            where ModelType : class, IKeyProvider
-            where CacheType : class, IKeyProvider
+            where ModelType : class
+            where CacheType : class
         {
             DatabaseCacheProvider<CacheType, ModelType> cacheProvider = null;
 
@@ -70,8 +70,8 @@ namespace EIM.Core
         }
 
         public ICacheProvider GetCacheProvider<CacheType, ModelType>()
-            where ModelType : class, IKeyProvider
-            where CacheType : class, IKeyProvider
+            where ModelType : class
+            where CacheType : class
         {
             return this.CacheProviders.Find(provider =>
             {

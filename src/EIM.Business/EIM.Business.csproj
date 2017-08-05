@@ -49,7 +49,6 @@
     <Compile Include="BusinessModelMapper.cs" />
     <Compile Include="BusinessModelMapperFactory.cs" />
     <Compile Include="EIMCacheContainer.cs" />
-    <Compile Include="IChangeInfo.cs" />
     <Compile Include="OperationInfo.cs" />
     <Compile Include="Org\Department.cs" />
     <Compile Include="Org\DepartmentInfo.cs" />
