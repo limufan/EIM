@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessManager.cs" />
-    <Compile Include="BusinessModelManagers\UserManager.cs" />
+    <Compile Include="BusinessManagers\UserManager.cs" />
     <Compile Include="DatabaseCacheProvider.cs" />
     <Compile Include="EIMCacheProviderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

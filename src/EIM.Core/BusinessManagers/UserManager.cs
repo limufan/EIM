@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Core.BusinessModelManagers
+namespace EIM.Core.BusinessManagers
 {
     public class UserManager
     {
@@ -198,7 +198,8 @@ namespace EIM.Core.BusinessModelManagers
         public void OnChanged(UserChangeInfo changeInfo)
         {
             changeInfo.ChangeUser.Change(changeInfo);
-            if(this.Changed != null)
+            this.CacheContainer.UserCacheManager.Change(changeInfo.ChangeUser, changeInfo.Snapshot);
+            if (this.Changed != null)
             {
                 this.Changed(changeInfo.ChangeUser, changeInfo);
             }

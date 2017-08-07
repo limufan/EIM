@@ -1,4 +1,5 @@
 ﻿using EIM.Business.Org;
+using EIM.Cache;
 using EIM.Data;
 using EIM.Data.Org;
 using System;
@@ -22,7 +23,7 @@ namespace EIM.Core
 
         protected virtual DatabaseCacheProvider<CacheType, ModelType> CreateCacheProvider<CacheType, ModelType>()
             where ModelType : class
-            where CacheType : class
+            where CacheType : class, ICache<CacheType>
         {
             DatabaseCacheProvider<CacheType, ModelType> cacheProvider = null;
 
@@ -71,7 +72,7 @@ namespace EIM.Core
 
         public ICacheProvider GetCacheProvider<CacheType, ModelType>()
             where ModelType : class
-            where CacheType : class
+            where CacheType : class, ICache<CacheType>
         {
             return this.CacheProviders.Find(provider =>
             {

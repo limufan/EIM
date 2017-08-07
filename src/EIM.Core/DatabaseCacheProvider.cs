@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using EIM.Business;
 using Newtonsoft.Json;
 using EIM.Cache.CacheManagers;
+using EIM.Cache;
 
 namespace EIM.Core
 {
@@ -22,9 +23,9 @@ namespace EIM.Core
         ReaderWriterLockedList<object> UnloadIdList { get; }
     }
 
-    public class DatabaseCacheProvider<BusinessType, ModelType> : CacheProvider<BusinessType>, IDatabaseCacheProvider
-            where BusinessType : class
-            where ModelType : class
+    public class DatabaseCacheProvider<CacheType, DataModelType> : CacheProvider<CacheType>, IDatabaseCacheProvider
+            where CacheType : class, ICache<CacheType>
+            where DataModelType : class
     {
 
         public DatabaseCacheProvider(DataManager dataManager, params ICacheManager[] dependentManagers)
@@ -39,7 +40,7 @@ namespace EIM.Core
 #endif
             this.DataManager = dataManager;
             this.DataModelProviderFactory = this.DataManager.DataModelProviderFactory;
-            this.CacheMapper = dataManager.DataModelMapperFactory.CreateMapper<BusinessType, ModelType>();
+            this.CacheMapper = dataManager.DataModelMapperFactory.CreateMapper<CacheType, DataModelType>();
             this.UnloadIdList = new ReaderWriterLockedList<object>();
         }
 
@@ -52,15 +53,15 @@ namespace EIM.Core
 
         public DataManager DataManager { set; get; }
 
-        public DataModelMapper<BusinessType, ModelType> CacheMapper { set; get; }
+        public DataModelMapper<CacheType, DataModelType> CacheMapper { set; get; }
 
         public DataModelProviderFactory DataModelProviderFactory { set; get; }
 
         public bool DisableCheckLogger { set; get; }
 
-        protected virtual DataModelProvider<ModelType> CreateDataProvider()
+        protected virtual DataModelProvider<DataModelType> CreateDataProvider()
         {
-            return this.DataModelProviderFactory.CreateDataProvider<ModelType>();
+            return this.DataModelProviderFactory.CreateDataProvider<DataModelType>();
         }
 
         protected override void OnLoaded()
@@ -69,12 +70,12 @@ namespace EIM.Core
             this._lastCheckTime = DateTime.Now;
         }
 
-        protected override List<BusinessType> GetCaches()
+        protected override List<CacheType> GetCaches()
         {
             object addLock = new object();
-            IList<ModelType> models = this.GetModels();
+            IList<DataModelType> models = this.GetModels();
 
-            List<BusinessType> caches = models.AsParallel()
+            List<CacheType> caches = models.AsParallel()
                 .WithDegreeOfParallelism(Environment.ProcessorCount / 2)
                 .Select(model => this.Map(model))
                 .ToList();
@@ -82,9 +83,30 @@ namespace EIM.Core
             return caches;
         }
 
-        protected virtual BusinessType AddCache(ModelType model)
+        public override void Refresh(object key)
         {
-            BusinessType cache = this.Map(model);
+            DataModelType model = null;
+            using (DataModelProvider<DataModelType> dataProvider = this.CreateDataProvider())
+            {
+                model = dataProvider.SelectById(key);
+            }
+            CacheType cache = this.CacheManager.Get(key) as CacheType;
+            if(cache == null)
+            {
+                cache = this.Map(model);
+            }
+            else
+            {
+                CacheType snapshot = cache.Clone();
+                CacheType cacheInfo = this.Map(model);
+                cache.Refresh(cacheInfo);
+                this.CacheManager.Change(cache, snapshot);
+            }
+        }
+
+        protected virtual CacheType AddCache(DataModelType model)
+        {
+            CacheType cache = this.Map(model);
             this.CacheManager.Add(cache);
 
             return cache;
@@ -98,15 +120,15 @@ namespace EIM.Core
             }
         }
 
-        public virtual IList<ModelType> GetModels()
+        public virtual IList<DataModelType> GetModels()
         {
-            using (DataModelProvider<ModelType> dataProvider = this.CreateDataProvider())
+            using (DataModelProvider<DataModelType> dataProvider = this.CreateDataProvider())
             {
                 return dataProvider.GetModels();
             }
         }
 
-        public virtual BusinessType Map(ModelType model)
+        public virtual CacheType Map(DataModelType model)
         {
             return this.CacheMapper.Map(model);
         }
