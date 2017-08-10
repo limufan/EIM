@@ -38,6 +38,11 @@ namespace EIM.Tests
             return user;
         }
 
+        public void Delete(User user)
+        {
+            this.BusinessManager.UserManager.Delete(user, new OperationInfo { OperationUser = Admin });
+        }
+
         public User Admin { set; get; }
     }
 }

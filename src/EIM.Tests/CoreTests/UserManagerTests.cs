@@ -41,10 +41,5 @@ namespace EIM.Tests.CoreTests
                 this.Delete(user);
             }
         }
-
-        private void Delete(User user)
-        {
-            this.BusinessManager.UserManager.Delete(user, new OperationInfo { OperationUser = Admin });
-        }
     }
 }

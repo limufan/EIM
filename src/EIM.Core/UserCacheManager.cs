@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Business.Org
+namespace EIM.Core
 {
     public class UserCacheManager : ByIdCodeGuidCacheManager<User>
     {

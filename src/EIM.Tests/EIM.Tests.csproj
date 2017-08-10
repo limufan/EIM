@@ -57,6 +57,7 @@
     <Compile Include="CoreTests\UserManagerTests.cs" />
     <Compile Include="FactoryTests\BusinessModelMapperFactoryTests.cs" />
     <Compile Include="FactoryTests\DataModelMapperFactoryTests.cs" />
+    <Compile Include="Temp\EIMCacheProviderManagerTests.cs" />
     <Compile Include="TestDataModel.cs" />
     <Compile Include="TestEIMDbContext.cs" />
     <Compile Include="FactoryTests\EFDataModelProviderFactoryTests.cs" />

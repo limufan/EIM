@@ -12,29 +12,29 @@ namespace EIM.Core
 {
     public class EIMCacheProviderManager: CacheProviderManager
     {
-        public EIMCacheProviderManager(DataManager dataManager)
+        public EIMCacheProviderManager(CacheContainer cacheContainer)
         {
-            this.DataManager = dataManager;
+            this.CacheContainer = cacheContainer;
 
             this.CreateCacheProvider<User, UserDataModel>();
         }
 
-        public DataManager DataManager { private set; get; }
+        public CacheContainer CacheContainer { private set; get; }
 
-        protected virtual DatabaseCacheProvider<CacheType, ModelType> CreateCacheProvider<CacheType, ModelType>()
+        protected virtual EIMCacheProvider<CacheType, ModelType> CreateCacheProvider<CacheType, ModelType>()
             where ModelType : class
             where CacheType : class, ICache<CacheType>
         {
-            DatabaseCacheProvider<CacheType, ModelType> cacheProvider = null;
+            EIMCacheProvider<CacheType, ModelType> cacheProvider = null;
 
-            Type cacheProviderType = ReflectionHelper.GetSingleSubclass<DatabaseCacheProvider<CacheType, ModelType>>(this.GetType().Assembly);
+            Type cacheProviderType = ReflectionHelper.GetSingleSubclass<EIMCacheProvider<CacheType, ModelType>>(this.GetType().Assembly);
             if (cacheProviderType == null)
             {
-                cacheProvider = new DatabaseCacheProvider<CacheType, ModelType>(this.DataManager);
+                cacheProvider = new EIMCacheProvider<CacheType, ModelType>(this.CacheContainer);
             }
             else
             {
-                cacheProvider = Activator.CreateInstance(cacheProviderType, this.DataManager) as DatabaseCacheProvider<CacheType, ModelType>;
+                cacheProvider = Activator.CreateInstance(cacheProviderType, this.CacheContainer) as EIMCacheProvider<CacheType, ModelType>;
             }
 
             if (cacheProvider == null)
@@ -45,39 +45,6 @@ namespace EIM.Core
             this.CacheProviders.Add(cacheProvider);
 
             return cacheProvider;
-        }
-
-        public IDatabaseCacheProvider GetCacheProvider<CacheType>() where CacheType : class
-        {
-            return this.CacheProviders.Find(provider =>
-            {
-                return provider is CacheProvider<CacheType> && provider is IDatabaseCacheProvider;
-            }) as IDatabaseCacheProvider;
-        }
-
-        public IDatabaseCacheProvider GetCacheProvider(Type type)
-        {
-            return this.CacheProviders.Find(provider =>
-            {
-                return provider.GetType() == type && provider is IDatabaseCacheProvider;
-            }) as IDatabaseCacheProvider;
-        }
-
-        public List<IDatabaseCacheProvider> GetDatabaseCacheProviders()
-        {
-            return this.CacheProviders.Where(provider => provider is IDatabaseCacheProvider)
-                .Select(provider => provider as IDatabaseCacheProvider)
-                .ToList();
-        }
-
-        public ICacheProvider GetCacheProvider<CacheType, ModelType>()
-            where ModelType : class
-            where CacheType : class, ICache<CacheType>
-        {
-            return this.CacheProviders.Find(provider =>
-            {
-                return provider is DatabaseCacheProvider<CacheType, ModelType>;
-            });
         }
     }
 }

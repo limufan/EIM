@@ -17,7 +17,7 @@ namespace EIM.Core.BusinessManagers
         {
             this.BusinessManager = businessManager;
             this.CacheContainer = businessManager.CacheContainer;
-            this.DataModelProviderFactory = businessManager.DataModelProviderFactory;
+            this.DataModelProviderFactory = new EFDataModelProviderFactory();
         }
 
         public BusinessManager BusinessManager { set; get; }

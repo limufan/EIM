@@ -15,25 +15,21 @@ namespace EIM.Core
         public BusinessManager()
         {
             this.CacheContainer = new EIMCacheContainer();
-            this.DataManager = new DataManager(this.CacheContainer);
-            this.DataModelProviderFactory = this.DataManager.DataModelProviderFactory;
-            this.CacheProviderManager = new EIMCacheProviderManager(this.DataManager);
+            this.CacheProviderManager = new EIMCacheProviderManager(this.CacheContainer);
 
             this.UserManager = new UserManager(this);
 
             this.DataModelMapperFactory = new DataModelMapperFactory(this.CacheContainer);
             this.BusinessModelMapperFactory = new BusinessModelMapperFactory(this.CacheContainer);
+
+            this.CacheProviderManager.Load();
         }
 
         public EIMCacheContainer CacheContainer { set; get; }
 
-        public DataManager DataManager { set; get; }
-
         public DataModelMapperFactory DataModelMapperFactory { set; get; }
 
         public BusinessModelMapperFactory BusinessModelMapperFactory { set; get; }
-
-        public DataModelProviderFactory DataModelProviderFactory { set; get; }
 
         public EIMCacheProviderManager CacheProviderManager { set; get; }
 

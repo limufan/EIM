@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EIM.Business.Org;
 
-namespace EIM.Business
+namespace EIM.Core
 {
     public class EIMCacheContainer: CacheContainer
     {

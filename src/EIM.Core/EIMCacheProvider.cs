@@ -1,6 +1,5 @@
-﻿using EIM.Core;
+﻿using EIM.Data;
 using EIM.Exceptions;
-using EIM.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,20 +15,13 @@ using EIM.Cache;
 
 namespace EIM.Core
 {
-    public interface IDatabaseCacheProvider : ICacheProvider
-    {
-        bool DisableCheckLogger { get; set; }
-
-        ReaderWriterLockedList<object> UnloadIdList { get; }
-    }
-
-    public class DatabaseCacheProvider<CacheType, DataModelType> : CacheProvider<CacheType>, IDatabaseCacheProvider
+    public class EIMCacheProvider<CacheType, DataModelType> : CacheProvider<CacheType>, ICacheProvider
             where CacheType : class, ICache<CacheType>
             where DataModelType : class
     {
 
-        public DatabaseCacheProvider(DataManager dataManager, params ICacheManager[] dependentManagers)
-            : base(dataManager.CacheContainer, dependentManagers)
+        public EIMCacheProvider(CacheContainer cacheContainer, params ICacheManager[] dependentManagers)
+            : base(cacheContainer, dependentManagers)
         {
 #if DEBUG
             this.MaxCount = ConfigurationManagerHelper.GetIntValue("DataLoadMaxCount");
@@ -38,26 +30,18 @@ namespace EIM.Core
                 this.MaxCount = int.MaxValue;
             }
 #endif
-            this.DataManager = dataManager;
-            this.DataModelProviderFactory = this.DataManager.DataModelProviderFactory;
-            this.CacheMapper = dataManager.DataModelMapperFactory.CreateMapper<CacheType, DataModelType>();
-            this.UnloadIdList = new ReaderWriterLockedList<object>();
+            this.DataModelProviderFactory = new EFDataModelProviderFactory();
+            DataModelMapperFactory dataModelMapperFactory = new DataModelMapperFactory(cacheContainer);
+            this.CacheMapper = dataModelMapperFactory.CreateMapper<CacheType, DataModelType>();
         }
 
 #if DEBUG
         public int MaxCount { set; get; }
 #endif
-        private DateTime _lastCheckTime;
-
-        public ReaderWriterLockedList<object> UnloadIdList { private set; get; }
-
-        public DataManager DataManager { set; get; }
 
         public DataModelMapper<CacheType, DataModelType> CacheMapper { set; get; }
 
         public DataModelProviderFactory DataModelProviderFactory { set; get; }
-
-        public bool DisableCheckLogger { set; get; }
 
         protected virtual DataModelProvider<DataModelType> CreateDataProvider()
         {
@@ -67,7 +51,6 @@ namespace EIM.Core
         protected override void OnLoaded()
         {
             base.OnLoaded();
-            this._lastCheckTime = DateTime.Now;
         }
 
         protected override List<CacheType> GetCaches()
@@ -114,10 +97,7 @@ namespace EIM.Core
 
         protected virtual void WriteCheckLog(string message, Exception ex)
         {
-            if (!this.DisableCheckLogger)
-            {
-                EIMLog.Logger.Info(message, ex);
-            }
+            EIMLog.Logger.Info(message, ex);
         }
 
         public virtual IList<DataModelType> GetModels()
