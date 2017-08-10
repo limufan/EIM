@@ -7,7 +7,7 @@ using EIM.Business;
 using EIM.Core;
 using System.Reflection;
 
-namespace EIM.Data
+namespace EIM.Data.DataModelProviders
 {
     public abstract class DataModelProviderFactory
     {

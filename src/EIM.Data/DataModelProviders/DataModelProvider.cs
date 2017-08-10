@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
-namespace EIM.Data
+namespace EIM.Data.DataModelProviders
 {
     public interface IDataModelProvider
     {

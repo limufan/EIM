@@ -12,6 +12,7 @@ using EIM.Business;
 using Newtonsoft.Json;
 using EIM.Cache.CacheManagers;
 using EIM.Cache;
+using EIM.Data.DataModelProviders;
 
 namespace EIM.Core
 {

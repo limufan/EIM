@@ -7,7 +7,7 @@ using EIM.Business;
 using EIM.Core;
 using System.Reflection;
 
-namespace EIM.Data
+namespace EIM.Data.DataModelProviders
 {
 
 
@@ -44,7 +44,7 @@ namespace EIM.Data
             if(dataProvider == null)
             {
                 EIMDbContext context = this.CreateDbContext("CreateDataProviderByModelType");
-                dataProvider = new EFDataModelProvider<ModelType>(context);
+                dataProvider = this.CreateDefaultDataProvider<ModelType>(context);
             }
 
             return dataProvider;
@@ -62,6 +62,12 @@ namespace EIM.Data
             IDataModelProvider dataProvider = Activator.CreateInstance(type, context) as IDataModelProvider;
 
             return dataProvider;
+        }
+
+        protected virtual DataModelProvider<ModelType> CreateDefaultDataProvider<ModelType>(EIMDbContext context)
+            where ModelType : class
+        {
+            return new EFDataModelProvider<ModelType>(context); ;
         }
     }
 }

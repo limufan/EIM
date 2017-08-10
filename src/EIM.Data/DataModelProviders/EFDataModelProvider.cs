@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Data
+namespace EIM.Data.DataModelProviders
 {
     public class EFDataModelProvider<ModelType> : DataModelProvider<ModelType>
         where ModelType : class

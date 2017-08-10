@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.12\lib\net40\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -55,6 +61,8 @@
   <ItemGroup>
     <Compile Include="DataModelMapper.cs" />
     <Compile Include="DataModelMapperFactory.cs" />
+    <Compile Include="DataModelProviders\DapperDataModelProvider.cs" />
+    <Compile Include="DataModelProviders\DapperDataModelProviderFactory.cs" />
     <Compile Include="DataModelProviders\UserDataModelProvider.cs" />
     <Compile Include="DataModelProviders\EFDataModelProvider.cs" />
     <Compile Include="DataModelProviders\EFDataModelProviderFactory.cs" />
