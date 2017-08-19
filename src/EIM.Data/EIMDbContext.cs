@@ -15,9 +15,7 @@ namespace EIM.Data
         public EIMDbContext()
             :base("EIM")
         {
-            this.DbSetList = new List<object>();
-            this.DbSetList.Add(this.Users);
-            this.DbSetList.Add(this.Departments);
+            
         }
 
         public DbSet<UserDataModel> Users { get; set; }
@@ -28,15 +26,17 @@ namespace EIM.Data
 
         public DbSet<T> GetDbSet<T>() where T : class
         {
-            foreach(object dbSet in this.DbSetList)
+            DbSet<T> dbset = null;
+            if (ReflectionHelper.TypeEqual<T, UserDataModel>())
             {
-                if(dbSet is DbSet<T>)
-                {
-                    return dbSet as DbSet<T>;
-                }
+                dbset = this.Users as DbSet<T>;
             }
-            return null;
+            else if (ReflectionHelper.TypeEqual<T, DepartmentDataModel>())
+            {
+                dbset = this.Departments as DbSet<T>;
+            }
+            return dbset;
         }
-
+        
     }
 }

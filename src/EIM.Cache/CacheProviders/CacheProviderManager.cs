@@ -85,7 +85,7 @@ namespace EIM.Cache
 
         public ICacheProvider GetCacheProvider<CacheType, ModelType>()
             where ModelType : class
-            where CacheType : class, ICache<CacheType>
+            where CacheType : class, ICacheRefreshable<CacheType>
         {
             return this.CacheProviders.Find(provider =>
             {

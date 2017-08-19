@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EIM.Business.Org
 {
-    public class User : UserInfo, IIdCodeGuidProvider, ICache<User>
+    public class User : UserInfo, IIdCodeGuidProvider, ICacheRefreshable<User>
     {
         public User(UserInfo userInfo)
         {
@@ -25,9 +25,12 @@ namespace EIM.Business.Org
             return new User(this);
         }
 
-        public void Refresh(User cacheInfo)
+        public User Refresh(User cacheInfo)
         {
+            User snapshot = new User(this);
             this.SetInfo(cacheInfo);
+
+            return snapshot;
         }
 
         protected virtual void SetInfo(UserBaseInfo info)

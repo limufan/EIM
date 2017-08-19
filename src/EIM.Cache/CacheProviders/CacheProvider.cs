@@ -19,7 +19,7 @@ namespace EIM.Cache
     }
 
     public abstract class CacheProvider<CacheType> : ICacheProvider
-            where CacheType : class
+            where CacheType : class, ICacheRefreshable<CacheType>
     {
         public CacheProvider(CacheContainer cacheContainer, params ICacheManager[] dependentManagers)
         {
@@ -140,8 +140,23 @@ namespace EIM.Cache
             Console.WriteLine(string.Format("{0} 加载了{1}条数据, 用时: {2}", this.GetType().Name, count, this._watch.Elapsed.TotalSeconds));
         }
 
+        public virtual void Refresh(object key)
+        {
+            CacheType newCache = this.GetCache(key);
+            CacheType cache = this.CacheManager.Get(key) as CacheType;
+            if (cache == null)
+            {
+                this.CacheManager.Add(newCache);
+            }
+            else
+            {
+                CacheType snapshot = cache.Refresh(newCache);
+                this.CacheManager.Change(cache, snapshot);
+            }
+        }
+
         protected abstract List<CacheType> GetCaches();
 
-        public abstract void Refresh(object key);
+        public abstract CacheType GetCache(object key);
     }
 }

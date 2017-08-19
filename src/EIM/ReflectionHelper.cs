@@ -480,5 +480,10 @@ namespace EIM
             }
             return subclassTypes.First();
         }
+
+        public static bool TypeEqual<T1, T2>()
+        {
+            return typeof(T1) == typeof(T2);
+        }
     }
 }

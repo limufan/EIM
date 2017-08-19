@@ -17,7 +17,7 @@ using EIM.Data.DataModelProviders;
 namespace EIM.Core
 {
     public class EIMCacheProvider<CacheType, DataModelType> : CacheProvider<CacheType>, ICacheProvider
-            where CacheType : class, ICache<CacheType>
+            where CacheType : class, ICacheRefreshable<CacheType>
             where DataModelType : class
     {
 
@@ -49,11 +49,6 @@ namespace EIM.Core
             return this.DataModelProviderFactory.CreateDataProvider<DataModelType>();
         }
 
-        protected override void OnLoaded()
-        {
-            base.OnLoaded();
-        }
-
         protected override List<CacheType> GetCaches()
         {
             object addLock = new object();
@@ -67,25 +62,15 @@ namespace EIM.Core
             return caches;
         }
 
-        public override void Refresh(object key)
+        public override CacheType GetCache(object key)
         {
             DataModelType model = null;
             using (DataModelProvider<DataModelType> dataProvider = this.CreateDataProvider())
             {
                 model = dataProvider.SelectById(key);
             }
-            CacheType cache = this.CacheManager.Get(key) as CacheType;
-            if(cache == null)
-            {
-                cache = this.Map(model);
-            }
-            else
-            {
-                CacheType snapshot = cache.Clone();
-                CacheType cacheInfo = this.Map(model);
-                cache.Refresh(cacheInfo);
-                this.CacheManager.Change(cache, snapshot);
-            }
+
+            return this.Map(model);
         }
 
         protected virtual CacheType AddCache(DataModelType model)

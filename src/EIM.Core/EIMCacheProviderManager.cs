@@ -23,7 +23,7 @@ namespace EIM.Core
 
         protected virtual EIMCacheProvider<CacheType, ModelType> CreateCacheProvider<CacheType, ModelType>()
             where ModelType : class
-            where CacheType : class, ICache<CacheType>
+            where CacheType : class, ICacheRefreshable<CacheType>
         {
             EIMCacheProvider<CacheType, ModelType> cacheProvider = null;
 
