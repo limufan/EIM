@@ -2,6 +2,7 @@
 using EIM.Cache.CacheManagers;
 using EIM.Core.BusinessManagers;
 using EIM.Data;
+using EIM.Data.DataModelProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,24 +13,31 @@ namespace EIM.Core
 {
     public class BusinessManager
     {
+        static BusinessManager()
+        {
+            Instance = new BusinessManager();
+        }
+
+        public static BusinessManager Instance { set; get; }
+
         public BusinessManager()
         {
             this.CacheContainer = new EIMCacheContainer();
-            this.CacheProviderManager = new EIMCacheProviderManager(this.CacheContainer);
+
+            this.MapperFactory = new DataModelMapperFactory(this.CacheContainer);
+            this.DataModelProviderFactory = new EFDataModelProviderFactory();
 
             this.UserManager = new UserManager(this);
 
-            this.DataModelMapperFactory = new DataModelMapperFactory(this.CacheContainer);
-            this.BusinessModelMapperFactory = new BusinessModelMapperFactory(this.CacheContainer);
-
+            this.CacheProviderManager = new EIMCacheProviderManager(this.CacheContainer);
             this.CacheProviderManager.Load();
         }
 
         public EIMCacheContainer CacheContainer { set; get; }
 
-        public DataModelMapperFactory DataModelMapperFactory { set; get; }
+        public DataModelMapperFactory MapperFactory { set; get; }
 
-        public BusinessModelMapperFactory BusinessModelMapperFactory { set; get; }
+        public DataModelProviderFactory DataModelProviderFactory { set; get; }
 
         public EIMCacheProviderManager CacheProviderManager { set; get; }
 

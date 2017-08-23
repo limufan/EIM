@@ -59,7 +59,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataModelMapper.cs" />
     <Compile Include="DataModelMapperFactory.cs" />
     <Compile Include="DataModelProviders\DapperDataModelProvider.cs" />
     <Compile Include="DataModelProviders\DapperDataModelProviderFactory.cs" />

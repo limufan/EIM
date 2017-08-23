@@ -12,25 +12,25 @@ using System.Threading.Tasks;
 
 namespace EIM.Tests.FactoryTests
 {
-    public class BusinessModelMapperFactoryTests
+    public class CacheMapperFactoryTests
     {
 
         [Test]
         public void CreateMapper()
         {
             CacheContainer cacheContainer = new CacheContainer();
-            BusinessModelMapperFactory factory = new BusinessModelMapperFactory(cacheContainer, typeof(BusinessModelMapperFactoryTests).Assembly);
+            CacheMapperFactory factory = new CacheMapperFactory(cacheContainer, typeof(CacheMapperFactoryTests).Assembly);
 
-            TBusinessModelMapper<User, UserDataModel> userMapper = factory.Create<User, UserDataModel>();
+            TCacheMapper<User, UserDataModel> userMapper = factory.Create<User, UserDataModel>();
             Assert.NotNull(userMapper);
 
-            TBusinessModelMapper<TestBusinessModel, TestDataModel> testMapper = factory.Create<TestBusinessModel, TestDataModel>();
+            TCacheMapper<TestBusinessModel, TestDataModel> testMapper = factory.Create<TestBusinessModel, TestDataModel>();
             Assert.NotNull(testMapper);
             Assert.True(testMapper is TestMapper);
         }
 
 
-        public class TestMapper: TBusinessModelMapper<TestBusinessModel, TestDataModel>
+        public class TestMapper: TCacheMapper<TestBusinessModel, TestDataModel>
         {
             public TestMapper(CacheContainer cacheContainer)
                 : base(cacheContainer)

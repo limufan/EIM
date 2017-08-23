@@ -12,8 +12,7 @@ namespace EIM.Tests
     {
         public TestEIMDbContext()
         {
-            this.DbSetList.Add(TestModels);
-            this.DbSetList.Add(Test_1_Models);
+            
         }
 
         public DbSet<TestDataModel> TestModels { get; set; }

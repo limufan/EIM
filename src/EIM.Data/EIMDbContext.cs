@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EIM.Business;
 using EIM.Core;
 using EIM.Data.Org;
+using System.Reflection;
 
 namespace EIM.Data
 {
@@ -22,10 +23,9 @@ namespace EIM.Data
 
         public DbSet<DepartmentDataModel> Departments { get; set; }
 
-        public List<object> DbSetList { set; get; }
-
-        public DbSet<T> GetDbSet<T>() where T : class
+        public virtual DbSet<T> GetDbSet<T>() where T : class
         {
+
             DbSet<T> dbset = null;
             if (ReflectionHelper.TypeEqual<T, UserDataModel>())
             {
@@ -35,6 +35,19 @@ namespace EIM.Data
             {
                 dbset = this.Departments as DbSet<T>;
             }
+            else
+            {
+                PropertyInfo[] properties = this.GetType().GetProperties();
+                foreach (PropertyInfo property in properties)
+                {
+                    if (typeof(DbSet<T>) == property.PropertyType)
+                    {
+                        dbset = property.GetValue(this) as DbSet<T>;
+                        break;
+                    }
+                }
+            }
+
             return dbset;
         }
         

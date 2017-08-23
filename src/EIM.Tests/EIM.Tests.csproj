@@ -61,8 +61,7 @@
   <ItemGroup>
     <Compile Include="CoreTests\CoreTestsBase.cs" />
     <Compile Include="CoreTests\UserManagerTests.cs" />
-    <Compile Include="FactoryTests\BusinessModelMapperFactoryTests.cs" />
-    <Compile Include="FactoryTests\DataModelMapperFactoryTests.cs" />
+    <Compile Include="FactoryTests\CacheMapperFactoryTests.cs" />
     <Compile Include="Temp\DapperDataModelProviderTests.cs" />
     <Compile Include="Temp\EIMCacheProviderManagerTests.cs" />
     <Compile Include="TestDataModel.cs" />

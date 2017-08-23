@@ -33,14 +33,14 @@ namespace EIM.Core
 #endif
             this.DataModelProviderFactory = new EFDataModelProviderFactory();
             DataModelMapperFactory dataModelMapperFactory = new DataModelMapperFactory(cacheContainer);
-            this.CacheMapper = dataModelMapperFactory.CreateMapper<CacheType, DataModelType>();
+            this.CacheMapper = dataModelMapperFactory.Create<CacheType, DataModelType>();
         }
 
 #if DEBUG
         public int MaxCount { set; get; }
 #endif
 
-        public DataModelMapper<CacheType, DataModelType> CacheMapper { set; get; }
+        public TCacheMapper<CacheType, DataModelType> CacheMapper { set; get; }
 
         public DataModelProviderFactory DataModelProviderFactory { set; get; }
 

@@ -18,17 +18,20 @@ namespace EIM.Core.BusinessManagers
         {
             this.BusinessManager = businessManager;
             this.CacheContainer = businessManager.CacheContainer;
-            this.DataModelProviderFactory = new EFDataModelProviderFactory();
+            this.DataModelProviderFactory = businessManager.DataModelProviderFactory;
+            this.MapperFactory = businessManager.MapperFactory;
         }
 
         public BusinessManager BusinessManager { set; get; }
 
         public DataModelProviderFactory DataModelProviderFactory { set; get; }
 
+        public DataModelMapperFactory MapperFactory { set; get; }
+
         public EIMCacheContainer CacheContainer { set; get; }
 
         public event TEventHandler<UserCreateInfo> Creating;
-        public event TEventHandler<User> Created;
+        public event TEventHandler<User, UserCreateInfo> Created;
         public virtual event TEventHandler<User, UserChangeInfo> Changing;
         public event TEventHandler<User, UserChangeInfo> Changed;
         public event TEventHandler<User, OperationInfo> Deleted;
@@ -40,15 +43,15 @@ namespace EIM.Core.BusinessManagers
         public User Create(UserCreateInfo createInfo)
         {
             this.OnCreating(createInfo);
-            UserDataModel model = this.BusinessManager.DataModelMapperFactory.Map<UserDataModel, UserCreateInfo>(createInfo);
+            UserDataModel model = this.MapperFactory.Map<UserDataModel, UserCreateInfo>(createInfo);
 
             using (DataModelProvider<UserDataModel> dataModelProvider = this.DataModelProviderFactory.CreateDataProvider<UserDataModel>())
             {
                 dataModelProvider.Insert(model);
             }
 
-            User user = this.BusinessManager.DataModelMapperFactory.Map<User, UserDataModel>(model);
-            this.OnCreated(user);
+            User user = this.MapperFactory.Map<User, UserDataModel>(model);
+            this.OnCreated(user, createInfo);
 
             return user;
         }
@@ -60,7 +63,7 @@ namespace EIM.Core.BusinessManagers
             using (DataModelProvider<UserDataModel> dataModelProvider = this.DataModelProviderFactory.CreateDataProvider<UserDataModel>())
             {
                 UserDataModel model = dataModelProvider.SelectById(changeInfo.ChangeUser.Id);
-                this.BusinessManager.DataModelMapperFactory.Map<UserDataModel, UserChangeInfo>(model, changeInfo);
+                this.MapperFactory.Map<UserDataModel, UserChangeInfo>(model, changeInfo);
                 dataModelProvider.Update(model);
 
                 this.OnChanged(changeInfo);
@@ -179,12 +182,12 @@ namespace EIM.Core.BusinessManagers
             }
         }
 
-        public void OnCreated(User user)
+        public void OnCreated(User user, UserCreateInfo createInfo)
         {
             this.CacheContainer.UserCacheManager.Add(user);
             if(this.Created != null)
             {
-                this.Created(user);
+                this.Created(user, createInfo);
             }
         }
 

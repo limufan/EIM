@@ -67,10 +67,11 @@
     <Compile Include="CacheManagers\DelayCacheManager.cs" />
     <Compile Include="CacheManagers\ICacheManager.cs" />
     <Compile Include="CacheMapper.cs" />
+    <Compile Include="CacheMapperFactory.cs" />
     <Compile Include="CacheProviders\CacheProvider.cs" />
     <Compile Include="CacheProviders\CacheProviderManager.cs" />
     <Compile Include="CacheChangedArgs.cs" />
-    <Compile Include="ICache.cs" />
+    <Compile Include="ICacheRefreshable.cs" />
     <Compile Include="IKeyProvider.cs" />
     <Compile Include="CacheFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EIM.Business.Org
+namespace EIM.Api.Org
 {
-    public class UserBaseInfo
+    public class UserBaseModel
     {
         public string Code { set; get; }
-
-        public string Guid { set; get; }
 
         public string Account { set; get; }
 
@@ -33,11 +31,19 @@ namespace EIM.Business.Org
         public UserRole Role { get; set; }
 
         /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
+    }
+
+    public class UserDetailsModel: UserBaseModel
+    {
+        public string Guid { set; get; }
+
+        /// <summary>
         /// 用户状态
         /// </summary>
         public UserStatus Status { get; set; }
-
-        public Position MainPosition { get; set; }
 
         /// <summary>
         /// 最后一次登录时间
@@ -48,37 +54,10 @@ namespace EIM.Business.Org
         /// 最后一次登录IP
         /// </summary>
         public string LastLoginIp { get; set; }
-
-        /// <summary>
-        /// 备注
-        /// </summary>
-        public string Remark { get; set; }
     }
 
-    public class UserInfo: UserBaseInfo
-    {
-        public int Id { set; get; }
-
-    }
-
-    public class UserCreateInfo: UserBaseInfo
+    public class UserCreateModel : UserBaseModel
     {
 
-
-    }
-
-    public class UserChangeInfo : UserBaseInfo
-    {
-        public UserChangeInfo(User user)
-        {
-            ObjectMapperHelper.Map(this, user);
-            this.ChangeUser = user;
-            UserInfo snapshotInfo = ObjectMapperHelper.Map<UserInfo>(user);
-            this.Snapshot = new User(snapshotInfo);
-        }
-
-        public User ChangeUser { set; get; }
-
-        public User Snapshot { set; get; }
     }
 }

@@ -21,7 +21,7 @@ namespace EIM.Tests
         {
             this.RandomDataFiller = new RandomDataFiller();
             this.ObjectEqualAsserter = new ObjectEqualAsserter();
-            this.BusinessManager = new BusinessManager();
+            this.BusinessManager = BusinessManager.Instance;
         }
 
         public BusinessManager BusinessManager { set; get; }

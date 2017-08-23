@@ -46,8 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessModelMapper.cs" />
-    <Compile Include="BusinessModelMapperFactory.cs" />
     <Compile Include="OperationInfo.cs" />
     <Compile Include="Org\Department.cs" />
     <Compile Include="Org\DepartmentInfo.cs" />

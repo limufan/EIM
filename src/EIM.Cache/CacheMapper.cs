@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -141,6 +142,46 @@ namespace EIM.Cache
             }
 
             return false;
+        }
+    }
+
+    public class TCacheMapper<TargetType, SourceType> : CacheMapper
+    {
+        public TCacheMapper(CacheContainer cacheContainer)
+            : base(cacheContainer)
+        {
+
+        }
+
+        public virtual TargetType Map(SourceType model)
+        {
+            if (model == null)
+            {
+                return default(TargetType);
+            }
+            ConstructorInfo cotr = ReflectionHelper.GetConstructor(typeof(TargetType));
+            ParameterInfo[] cotrParams = cotr.GetParameters();
+            if (cotrParams.Length > 1)
+            {
+                throw new Exception("无法加载多个参数列表的对象!");
+            }
+            else if (cotrParams.Length == 1)
+            {
+                object infoArgs = this.Map(model, cotrParams[0].ParameterType);
+
+                TargetType obj = this.Map<TargetType>(infoArgs);
+                return obj;
+            }
+            else
+            {
+                TargetType obj = this.Map<TargetType>(model);
+                return obj;
+            }
+        }
+
+        public virtual void Map(TargetType target, SourceType source)
+        {
+            this.Map(target, source);
         }
     }
 }

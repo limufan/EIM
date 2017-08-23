@@ -43,11 +43,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="EIMService.cs" />
+    <Compile Include="ServiceManager.cs" />
+    <Compile Include="ServiceModelMapperFactory.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EIM.Api\EIM.Api.csproj">
+      <Project>{ef62d844-3fcd-4a7d-8187-ec3bd38c4ff9}</Project>
+      <Name>EIM.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIM.Business\EIM.Business.csproj">
+      <Project>{9be61205-7157-4e41-a36d-2af28654ab32}</Project>
+      <Name>EIM.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIM.Cache\EIM.Cache.csproj">
+      <Project>{0f6b44f4-d579-49cf-9ab7-449c5250891d}</Project>
+      <Name>EIM.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIM.Core\EIM.Core.csproj">
+      <Project>{ceac9f8e-f914-4aa8-9343-d446d971f56a}</Project>
+      <Name>EIM.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIM.Data\EIM.Data.csproj">
+      <Project>{e9729f6f-84fd-4ae7-b000-677e94a0cf44}</Project>
+      <Name>EIM.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIM\EIM.csproj">
+      <Project>{688205cb-09f5-44ca-b36a-bb38692d4695}</Project>
+      <Name>EIM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
