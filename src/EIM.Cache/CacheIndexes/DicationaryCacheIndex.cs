@@ -32,6 +32,10 @@ namespace EIM.Cache.CacheIndexes
         public override void Add(CacheType cache)
         {
             KeyType key = this.GetKey(cache);
+            if (key == null)
+            {
+                return;
+            }
             if (this.DicByKey.ContainsKey(key))
             {
                 EIMLog.Logger.WarnFormat("{0} 重复key: {1}", this.GetType().Name, key);

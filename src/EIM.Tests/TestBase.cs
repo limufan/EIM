@@ -17,11 +17,26 @@ namespace EIM.Tests
             MigrationsConfiguration.SetInitializer();
         }
 
+        static BusinessManager _businessManagerInstance;
+        static BusinessManager BusinessManagerInstance
+        {
+            get
+            {
+
+                if (_businessManagerInstance == null)
+                {
+                    _businessManagerInstance = new BusinessManager();
+                }
+
+                return _businessManagerInstance;
+            }
+        }
+
         public TestBase()
         {
             this.RandomDataFiller = new RandomDataFiller();
             this.ObjectEqualAsserter = new ObjectEqualAsserter();
-            this.BusinessManager = BusinessManager.Instance;
+            this.BusinessManager = BusinessManagerInstance;
         }
 
         public BusinessManager BusinessManager { set; get; }

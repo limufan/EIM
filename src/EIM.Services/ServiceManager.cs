@@ -12,7 +12,7 @@ namespace EIM.Services
 
         static ServiceManager()
         {
-            Instance = new ServiceManager(BusinessManager.Instance);
+            Instance = new ServiceManager(new BusinessManager());
         }
 
         public static ServiceManager Instance { set; get; }

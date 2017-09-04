@@ -10,15 +10,12 @@ using System.Threading.Tasks;
 
 namespace EIM.Cache
 {
-    public interface ICacheProvider
+    public abstract class CacheProvider
     {
-        /// <summary>
-        /// 加载缓存
-        /// </summary>
-        void Load(bool newThread);
+        public abstract void Load();
     }
 
-    public abstract class CacheProvider<CacheType> : ICacheProvider
+    public abstract class CacheProvider<CacheType> : CacheProvider
             where CacheType : class, ICacheRefreshable<CacheType>
     {
         public CacheProvider(CacheContainer cacheContainer, params ICacheManager[] dependentManagers)
@@ -45,20 +42,7 @@ namespace EIM.Cache
 
         public List<ICacheManager> DependentManagers { private set; get; }
 
-        public virtual void Load(bool newThread)
-        {
-            if (newThread)
-            {
-                Thread realodThread = new Thread(this.Load);
-                realodThread.Start();
-            }
-            else
-            {
-                this.Load();
-            }
-        }
-
-        protected virtual void Load()
+        public override void Load()
         {
             try
             {
@@ -88,11 +72,6 @@ namespace EIM.Cache
 
                 this.OnLoaded();
 
-            }
-            catch (Exception ex)
-            {
-                EIMLog.Logger.Error(ex.Message, ex);
-                throw;
             }
             finally
             {

@@ -13,13 +13,6 @@ namespace EIM.Core
 {
     public class BusinessManager
     {
-        static BusinessManager()
-        {
-            Instance = new BusinessManager();
-        }
-
-        public static BusinessManager Instance { set; get; }
-
         public BusinessManager()
         {
             this.CacheContainer = new EIMCacheContainer();

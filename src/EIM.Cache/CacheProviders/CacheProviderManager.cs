@@ -16,17 +16,17 @@ namespace EIM.Cache
         {
             this._lock = new object();
 
-            this.CacheProviders = new List<ICacheProvider>();
+            this.CacheProviders = new List<CacheProvider>();
         }
 
         object _lock;
 
-        public List<ICacheProvider> CacheProviders { private set; get; }
+        public List<CacheProvider> CacheProviders { private set; get; }
 
         protected virtual T CreateCacheProvider<T>()
         {
             T cacheProvder = (T)Activator.CreateInstance(typeof(T));
-            this.CacheProviders.Add(cacheProvder as ICacheProvider);
+            this.CacheProviders.Add(cacheProvder as CacheProvider);
 
             return cacheProvder;
         }
@@ -62,9 +62,9 @@ namespace EIM.Cache
                 {
                     ConsoleHelper.WriteLine("开始加载数据....");
 
-                    foreach (ICacheProvider dataProvider in this.CacheProviders)
+                    foreach (CacheProvider dataProvider in this.CacheProviders)
                     {
-                        dataProvider.Load(false);
+                        dataProvider.Load();
                     }
                 }
 
@@ -83,13 +83,13 @@ namespace EIM.Cache
             }
         }
 
-        public ICacheProvider GetCacheProvider<CacheType, ModelType>()
+        public CacheProvider GetCacheProvider<CacheType, ModelType>()
             where ModelType : class
             where CacheType : class, ICacheRefreshable<CacheType>
         {
             return this.CacheProviders.Find(provider =>
             {
-                return provider is ICacheProvider;
+                return provider is CacheProvider;
             });
         }
     }

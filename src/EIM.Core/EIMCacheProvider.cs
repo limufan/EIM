@@ -16,7 +16,7 @@ using EIM.Data.DataModelProviders;
 
 namespace EIM.Core
 {
-    public class EIMCacheProvider<CacheType, DataModelType> : CacheProvider<CacheType>, ICacheProvider
+    public class EIMCacheProvider<CacheType, DataModelType> : CacheProvider<CacheType>
             where CacheType : class, ICacheRefreshable<CacheType>
             where DataModelType : class
     {
