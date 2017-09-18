@@ -6,14 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EIM.Business.Org;
+using EIM.Core.EventManagers;
 
 namespace EIM.Core
 {
     public class EIMCacheContainer: CacheContainer
     {
-        public EIMCacheContainer()
+        public EIMCacheContainer(EventManager eventManager)
         {
-            this.UserCacheManager = this.CreateManager<UserCacheManager>();
+            this.UserCacheManager = this.CreateManager<UserCacheManager>(eventManager.UserEventManager);
         }
 
         public UserCacheManager UserCacheManager { set; get; }

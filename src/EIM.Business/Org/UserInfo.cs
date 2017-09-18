@@ -73,12 +73,8 @@ namespace EIM.Business.Org
         {
             ObjectMapperHelper.Map(this, user);
             this.ChangeUser = user;
-            UserInfo snapshotInfo = ObjectMapperHelper.Map<UserInfo>(user);
-            this.Snapshot = new User(snapshotInfo);
         }
 
         public User ChangeUser { set; get; }
-
-        public User Snapshot { set; get; }
     }
 }

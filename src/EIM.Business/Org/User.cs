@@ -15,19 +15,24 @@ namespace EIM.Business.Org
             this.SetInfo(userInfo);
         }
 
-        public void Change(UserChangeInfo changeInfo)
-        {
-            this.SetInfo(changeInfo);
-        }
-
         public User Clone()
         {
-            return new User(this);
+            User clone = new User(this);
+
+            return clone;
+        }
+
+        public User Change(UserChangeInfo changeInfo)
+        {
+            User snapshot = this.Clone();
+            this.SetInfo(changeInfo);
+
+            return snapshot;
         }
 
         public User Refresh(User cacheInfo)
         {
-            User snapshot = new User(this);
+            User snapshot = this.Clone();
             this.SetInfo(cacheInfo);
 
             return snapshot;
