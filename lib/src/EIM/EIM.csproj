@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{688205CB-09F5-44CA-B36A-BB38692D4695}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EIM</RootNamespace>
+    <AssemblyName>EIM</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cryptography.cs" />
+    <Compile Include="EIMLog.cs" />
+    <Compile Include="ConfigurationManagerHelper.cs" />
+    <Compile Include="ConsoleHelper.cs" />
+    <Compile Include="DateRange.cs" />
+    <Compile Include="DateTimeHelper.cs" />
+    <Compile Include="DateTimeRange.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Exceptions\EIMException.cs" />
+    <Compile Include="Exceptions\DataProviderLoadedCountNotEqualException.cs" />
+    <Compile Include="Exceptions\LoadByWhereContainsSqlKeywordflowException.cs" />
+    <Compile Include="Exceptions\LoadByWhereCountOverflowException.cs" />
+    <Compile Include="Exceptions\ObjectFilterSoftException.cs" />
+    <Compile Include="Exceptions\ObjectManagerUnableException.cs" />
+    <Compile Include="Exceptions\ValidateException.cs" />
+    <Compile Include="IOrderable.cs" />
+    <Compile Include="IPropertyComparable.cs" />
+    <Compile Include="IStringResouceProvider.cs" />
+    <Compile Include="JsonConvertHelper.cs" />
+    <Compile Include="JsonWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="KeywordMatcher.cs" />
+    <Compile Include="LogStopwatch.cs" />
+    <Compile Include="ObjectComparer.cs" />
+    <Compile Include="ObjectMapper.cs" />
+    <Compile Include="OrderHelper.cs" />
+    <Compile Include="Exceptions\Org\AccountEmptyException.cs" />
+    <Compile Include="Exceptions\Org\AccountExpiredException.cs" />
+    <Compile Include="Exceptions\Org\AccountLockedException.cs" />
+    <Compile Include="Exceptions\Org\AccountLogoffException.cs" />
+    <Compile Include="Exceptions\Org\AccountNotFoundException.cs" />
+    <Compile Include="Exceptions\Org\AccountOrPasswordWrongException.cs" />
+    <Compile Include="Exceptions\Org\AccountReapeatException.cs" />
+    <Compile Include="Exceptions\Org\AccountSignedException.cs" />
+    <Compile Include="Exceptions\Org\ADConnectException.cs" />
+    <Compile Include="Exceptions\Org\CannotAddMemberToVirtualGroupException.cs" />
+    <Compile Include="Exceptions\Org\CannotChangeSystemGroupCodeException.cs" />
+    <Compile Include="Exceptions\Org\CodeEqualsNameException.cs" />
+    <Compile Include="Exceptions\Org\CodeRepeatException.cs" />
+    <Compile Include="Exceptions\Org\ContainsCircleGroupException.cs" />
+    <Compile Include="Exceptions\Org\ContainsContactException.cs" />
+    <Compile Include="Exceptions\Org\ContainsDepartmentException.cs" />
+    <Compile Include="Exceptions\Org\ContainsGroupException.cs" />
+    <Compile Include="Exceptions\Org\ContainsPositionException.cs" />
+    <Compile Include="Exceptions\Org\ContainsSelfGroupException.cs" />
+    <Compile Include="Exceptions\Org\ContainsUserException.cs" />
+    <Compile Include="Exceptions\Org\DepartmentHasLogoffUserDeleteException.cs" />
+    <Compile Include="Exceptions\Org\DepartmentHasUserDeleteException.cs" />
+    <Compile Include="Exceptions\Org\DepartmentNameReapeatException.cs" />
+    <Compile Include="Exceptions\Org\GroupNameReapeatException.cs" />
+    <Compile Include="Exceptions\Org\InvalidTokenException.cs" />
+    <Compile Include="Exceptions\Org\IPDenyExpcetion.cs" />
+    <Compile Include="Exceptions\Org\IPFormatException.cs" />
+    <Compile Include="Exceptions\Org\LeaderPositionCannotSelfException.cs" />
+    <Compile Include="Exceptions\Org\LeaderPositionCannotSuperiorException.cs" />
+    <Compile Include="Exceptions\Org\LeaderPositionCannotUnderlingException.cs" />
+    <Compile Include="Exceptions\Org\LeaderPositionRepeatException.cs" />
+    <Compile Include="Exceptions\Org\LicenseException.cs" />
+    <Compile Include="Exceptions\Org\LicenseExpiredException.cs" />
+    <Compile Include="Exceptions\Org\LicenseNullExpcetion.cs" />
+    <Compile Include="Exceptions\Org\LicenseUserMaxedException.cs" />
+    <Compile Include="Exceptions\Org\NameEqualsCodeExceptioncs.cs" />
+    <Compile Include="Exceptions\Org\NeedModifyDefaultPasswordException.cs" />
+    <Compile Include="Exceptions\Org\NotDownRmoveException.cs" />
+    <Compile Include="Exceptions\Org\NotUpRemoveException.cs" />
+    <Compile Include="Exceptions\Org\OldPasswordWrongException.cs" />
+    <Compile Include="Exceptions\Org\OrganizationException.cs" />
+    <Compile Include="Exceptions\Org\PasswordComplexInvalidException.cs" />
+    <Compile Include="Exceptions\Org\PasswordExpiredException.cs" />
+    <Compile Include="Exceptions\Org\PasswordLengthInvalidException.cs" />
+    <Compile Include="Exceptions\Org\PasswordWrongException.cs" />
+    <Compile Include="Exceptions\Org\PositionChildHasLogoffUserDeleteException.cs" />
+    <Compile Include="Exceptions\Org\PositionChildHasUserDeleteException.cs" />
+    <Compile Include="Exceptions\Org\PositionDeleteException.cs" />
+    <Compile Include="Exceptions\Org\PositionHasLogoffUserDeleteException.cs" />
+    <Compile Include="Exceptions\Org\PositionHasUserDeleteException.cs" />
+    <Compile Include="Exceptions\Org\PositionNameReapeatException.cs" />
+    <Compile Include="Exceptions\Org\PositionParentCannotSelfException.cs" />
+    <Compile Include="Exceptions\Org\PositionUserExistsException.cs" />
+    <Compile Include="Exceptions\Org\SystemGroupCannotModifyException.cs" />
+    <Compile Include="Enums\Org\UserGender.cs" />
+    <Compile Include="Exceptions\Org\UserNameEmptyException.cs" />
+    <Compile Include="Exceptions\Org\UserNeedMainPositionException.cs" />
+    <Compile Include="Enums\Org\UserRole.cs" />
+    <Compile Include="Enums\Org\UserStatus.cs" />
+    <Compile Include="Pinyin\DimingPinyinProvider.cs" />
+    <Compile Include="Pinyin\HanziPinyinHelper.cs" />
+    <Compile Include="Pinyin\PinyinProvider.cs" />
+    <Compile Include="Pinyin\ZikuLoader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReaderWriterLockedList.cs" />
+    <Compile Include="ReaderWriterLockedQueue.cs" />
+    <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="RegexHelper.cs" />
+    <Compile Include="RegexList.cs" />
+    <Compile Include="TableNames.cs" />
+    <Compile Include="TEventHandler.cs" />
+    <Compile Include="TextHelper.cs" />
+    <Compile Include="ValueAttributes\AreaServerCodeValueAttribute.cs" />
+    <Compile Include="ValueAttributes\DepartmentGuidValueAttribute.cs" />
+    <Compile Include="ValueAttributes\FuwudanTypeValueAttribute.cs" />
+    <Compile Include="ValueAttributes\GuidStringValueAttribute.cs" />
+    <Compile Include="ValueAttributes\LimitedLengthValueAttribute.cs" />
+    <Compile Include="ValueAttributes\LocationValueAttribute.cs" />
+    <Compile Include="ValueAttributes\NotUpdateValueAttribute.cs" />
+    <Compile Include="ValueAttributes\ProductGuidValueAttribute.cs" />
+    <Compile Include="ValueAttributes\ProductU9CodeValueAttribute.cs" />
+    <Compile Include="ValueAttributes\ReadonlyValueAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Pinyin\地名字库.txt" />
+    <Content Include="Pinyin\字库.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Consts\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

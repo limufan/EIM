@@ -1,7 +1,8 @@
 ﻿using EIM.Business;
 using EIM.Cache.CacheManagers;
 using EIM.Core.BusinessManagers;
-using EIM.Core.EventManagers;
+using EIM.Core.Events;
+using EIM.Core.MessageMangers;
 using EIM.Data;
 using EIM.Data.DataModelProviders;
 using System;
@@ -17,16 +18,15 @@ namespace EIM.Core
         public BusinessManager()
         {
             this.EventManager = new EventManager();
-
             this.CacheContainer = new EIMCacheContainer(this.EventManager);
-
+            this.MessageManager = new MessageManager(this.EventManager);
             this.MapperFactory = new DataModelMapperFactory(this.CacheContainer);
             this.DataModelProviderFactory = new EFDataModelProviderFactory();
 
-            this.UserManager = new UserManager(this);
-
             this.CacheProviderManager = new EIMCacheProviderManager(this.CacheContainer);
-            this.CacheProviderManager.Load();
+
+            this.CacheSyncService = new CacheSyncService(this.CacheProviderManager);
+            this.CacheSyncService.Start();
         }
 
         public EIMCacheContainer CacheContainer { set; get; }
@@ -37,8 +37,10 @@ namespace EIM.Core
 
         public EIMCacheProviderManager CacheProviderManager { set; get; }
 
-        public UserManager UserManager { set; get; }
-
         public EventManager EventManager { set; get; }
+
+        public MessageManager MessageManager { set; get; }
+
+        public CacheSyncService CacheSyncService { set; get; }
     }
 }

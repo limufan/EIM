@@ -1,4 +1,5 @@
 ﻿using EIM.Core;
+using EIM.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace EIM.Services
         public ServiceManager(BusinessManager businessManager)
         {
             this.BusinessManager = businessManager;
+            this.ServiceMapperFactory = new ServiceModelMapperFactory(this.BusinessManager.CacheContainer);
         }
 
 

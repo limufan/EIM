@@ -1,4 +1,5 @@
 ﻿using EIM.Core;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EIM.Services
 {
-    public class EIMService
+    public class EIMService: Service
     {
         public EIMService()
         {
@@ -15,8 +16,8 @@ namespace EIM.Services
             this.BusinessManager = ServiceManager.Instance.BusinessManager;
         }
 
-        public ServiceModelMapperFactory MapperFactory { set; get; }
+        public ServiceModelMapperFactory MapperFactory { private set; get; }
 
-        public BusinessManager BusinessManager { set; get; }
+        public BusinessManager BusinessManager { private set; get; }
     }
 }

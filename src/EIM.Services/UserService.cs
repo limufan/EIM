@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EIM.Api.Org;
 using EIM.Core;
 using EIM.Business.Org;
+using EIM.Core.BusinessManagers;
 
 namespace EIM.Services
 {
@@ -13,13 +14,17 @@ namespace EIM.Services
     {
         public UserService()
         {
-            
+            this.UserManager = new UserManager(this.BusinessManager);
         }
 
-        public UserDetailsModel Create(UserCreateModel createModel)
+        public UserManager UserManager { private set; get; }
+
+
+        public UserDetailsModel Any(UserCreateModel createModel)
         {
             UserCreateInfo createInfo = this.MapperFactory.Map<UserCreateInfo, UserCreateModel>(createModel);
-            User user = this.BusinessManager.UserManager.Create(createInfo);
+            UserManager userManager = new UserManager(this.BusinessManager);
+            User user = userManager.Create(createInfo);
 
             return this.MapperFactory.Map<UserDetailsModel, User>(user);
         }

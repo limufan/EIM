@@ -1,0 +1,9 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug"/>
+  <Config name="Debug">
+    <assembly path="bin\Debug\EIM.Tests.dll"/>
+  </Config>
+  <Config name="Release">
+    <assembly path="bin\Release\EIM.Tests.dll"/>
+  </Config>
+</NUnitProject>

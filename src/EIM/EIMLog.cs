@@ -24,7 +24,7 @@ namespace EIM
 
         private static void _Config()
         {
-            string log4netConfigFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cacheLog4net.config");
+            string log4netConfigFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "eimLog4net.config");
             FileInfo configFileInfo = new FileInfo(log4netConfigFile);
             log4net.Config.XmlConfigurator.Configure(configFileInfo);
             Logger = log4net.LogManager.GetLogger("logger");
