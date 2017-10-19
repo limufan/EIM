@@ -144,6 +144,7 @@ namespace EIM.Api
                 {
                     this.WriteLog(ex, requestDto);
                 }
+
                 throw ex;
             }
         }

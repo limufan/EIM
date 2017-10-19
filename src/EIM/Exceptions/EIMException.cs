@@ -6,7 +6,7 @@ namespace EIM.Exceptions
     [Serializable]
     public class EIMException : ApplicationException
     {
-        public EIMException()
+        protected EIMException()
         {
             this.ExceptionMessage = "操作异常!";
         }
